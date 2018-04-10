@@ -1,0 +1,147 @@
+<section>
+  <!-- Left Sidebar -->
+  <aside id="leftsidebar" class="sidebar">
+    <!-- User Info -->
+    <div class="user-info">
+      <div class="image">
+        <img src="assets/images/user.png" width="48" height="48" alt="User" />
+      </div>
+      <div class="info-container">
+        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.username}}</div>
+        <div class="email">john.doe@example.com</div>
+
+      </div>
+    </div>
+    <!-- #User Info -->
+    <!-- Menu -->
+    <div class="menu">
+      <ul class="list">
+        <!--<li class="header">MAIN NAVIGATION</li>-->
+        <li [routerLink]="['accueil']" routerLinkActive="active">
+          <a>
+            <i class="material-icons">home</i>
+            <span>Accueil</span>
+          </a>
+        </li>
+        <li [routerLink]="['profile']" routerLinkActive="active">
+          <a>
+            <i class="material-icons">people</i>
+            <span>Profile</span>
+          </a>
+        </li>
+
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">view_headline</i>
+            <span>Liste des ressources</span>
+          </a>
+          <ul class="ml-menu">
+            <li [routerLink]="['resources/list']" routerLinkActive="bg-grey">
+              <a  class="menu-toggle">
+                <span>Tous</span>
+              </a>
+            </li>
+            <li [routerLink]="['resources/list/category']" routerLinkActive="bg-grey">
+              <a href="javascript:void(0);" class="menu-toggle">
+                <span>Infobox</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li [routerLink]="['reservation/add']" routerLinkActive="active">
+          <a  >
+            <i class="material-icons">date_range</i>
+            <span>Réserver ressource</span>
+          </a>
+        </li>
+        <li [routerLink]="['search']" routerLinkActive="active">
+          <a >
+            <i class="material-icons">search</i>
+            <span>Recherche Ressource</span>
+          </a>
+        </li>
+        <li class="header">Logout</li>
+        <li>
+          <a (click)="logout()">
+            <i class="material-icons col-red">exit_to_app</i>
+            <span>Déconnexion</span>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+    <!-- #Menu -->
+    <!-- Footer -->
+    <div class="legal">
+      <div class="copyright">
+        <a href="javascript:void(0);">Réservation des ressources</a>.
+      </div>
+      <!--<div class="version">-->
+        <!--<b>Version: </b> 1.0.4-->
+      <!--</div>-->
+    </div>
+    <!-- #Footer -->
+  </aside>
+  <!-- #END# Left Sidebar -->
+  <!-- Right Sidebar -->
+  <aside id="rightsidebar" class="right-sidebar">
+    <ul class="nav nav-tabs tab-nav-right" role="tablist">
+      <li role="presentation" ><a href="#skins" data-toggle="tab">SKINS</a></li>
+    </ul>
+    <div class="tab-content">
+
+      <div role="tabpanel" class="tab-pane fade in active in active" id="settings">
+        <div class="demo-settings">
+          <p>GENERAL SETTINGS</p>
+          <ul class="setting-list">
+            <li>
+              <span>Report Panel Usage</span>
+              <div class="switch">
+                <label><input type="checkbox" checked><span class="lever"></span></label>
+              </div>
+            </li>
+            <li>
+              <span>Email Redirect</span>
+              <div class="switch">
+                <label><input type="checkbox"><span class="lever"></span></label>
+              </div>
+            </li>
+          </ul>
+          <p>SYSTEM SETTINGS</p>
+          <ul class="setting-list">
+            <li>
+              <span>Notifications</span>
+              <div class="switch">
+                <label><input type="checkbox" checked><span class="lever"></span></label>
+              </div>
+            </li>
+            <li>
+              <span>Auto Updates</span>
+              <div class="switch">
+                <label><input type="checkbox" checked><span class="lever"></span></label>
+              </div>
+            </li>
+          </ul>
+          <p>ACCOUNT SETTINGS</p>
+          <ul class="setting-list">
+            <li>
+              <span>Offline</span>
+              <div class="switch">
+                <label><input type="checkbox"><span class="lever"></span></label>
+              </div>
+            </li>
+            <li>
+              <span>Location Permission</span>
+              <div class="switch">
+                <label><input type="checkbox" checked><span class="lever"></span></label>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- #END# Right Sidebar -->
+</section>
+
+

@@ -1,0 +1,70 @@
+<section class="content">
+  <div class="page-container">
+    <div class="page-content-wrapper animated fadeInRight">
+      <div class="page-content">
+        <div class="row wrapper border-bottom page-heading">
+          <div class="col-lg-12">
+            <h2> Liste des ressources </h2>
+            <ol class="breadcrumb">
+              <li><a href="index.html">Accueil</a></li>
+              <li><a> Ressources </a></li>
+              <li class="active"><strong>Liste</strong></li>
+            </ol>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div *ngFor="let category of categories" class="col-lg-12 top30">
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <h5>Les Ressources de {{category.name}}</h5>
+            </div>
+            <div class="ibox-content collapse in" id="demo1">
+              <div class="widgets-container">
+                <div class="panel-group wrap" id="accordion" role="tablist" aria-multiselectable="true">
+                  <div *ngFor="let resource of category.ressource ; let i = index" [attr.data-index]="i" class="panel">
+                    <div class="panel-heading bg-green-blue" role="tab" id="headingOne">
+                      <div class="row">
+                        <h4 class="col-md-11 col-xs-11 panel-title">
+                          <a role="button" data-toggle="collapse" data-parent="#accordion"
+                             href="#collapse{{resource.id}}"
+                             aria-expanded="true" aria-controls="collapseOne">
+                            {{resource.modele}}
+                          </a>
+                        </h4>
+                        <div class="col-md-1 col-xs-1">
+                          <button class="btn bg-black-blue" [routerLink]="['/logged/reservation/add',resource.id]"><i
+                            class="fa fa-calendar"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="collapse{{resource.id}}" [ngClass]="{'panel-collapse collapse': true, 'in': i < 1 }"
+                         role="tabpanel" aria-labelledby="headingOne">
+                      <div class="panel-body">
+                        <ul>
+                          <li *ngFor="let entry of resource | keysPipe">
+                            {{entry.key | uppercase}} : {{entry.value}}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- end of panel -->
+                </div>
+                <!-- end of #accordion -->
+
+                <!-- end of wrap -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+
+</script>
+
+

@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed|Yanone+Kaffeesatz|Oxygen");
+/*@import url("../assets/calendar/dist/fullcalendar.css");*/
+.page-heading {
+  background: #fff none repeat scroll 0 0;
+  border-top: 0 none;
+  padding: 10px;
+}
+.page-heading h2 {
+  margin-top: 0;
+}
+
+.select2{
+  min-width: 100%;
+  max-width: 100%;
+}
+

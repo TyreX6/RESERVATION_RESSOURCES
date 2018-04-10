@@ -1,0 +1,23 @@
+.btn-category {
+  width: 100%;
+  font-size: 20px !important;
+  font-weight: bold;
+  padding: 80px 0;
+  text-align: center;
+  border: 2px solid #44b6ae !important;
+}
+.input-sm {
+  height: 45px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.btn-sm,
+.btn-group-sm > .btn {
+  padding: 10px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
