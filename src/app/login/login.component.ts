@@ -40,12 +40,13 @@ export class LoginComponent implements OnInit {
     this.spinnerService.show();
 
     this.authenticationService.loginService(this.loginForm.value).then((result) => {
-
+      console.log(result);
       localStorage.setItem('access_token', result['token']);
+      //localStorage.setItem('data', result['data']);
       this._globalService.currentUser = this.jwtHelper.decodeToken(result['token']);
-      this._globalService.currentUser.id = result["data"].id;
+
       this.spinnerService.hide();
-      this.router.navigate(['/logged/accueil']);
+      this.router.navigate(['/logged/reservation/add']);
       location.reload();
 
     }, (err) => {

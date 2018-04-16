@@ -30,6 +30,8 @@
         "assets/adminbag/assets/css/main.css",
         "assets/css/personalized.css",
         "assets/adminbag/assets/css/select2.min.css",
+        "../node_modules/ngx-toastr/toastr.css",
+        "assets/css/picker.min.css",
         "styles.css"
       ],
       "scripts": [
@@ -43,7 +45,9 @@
         "../node_modules/fullcalendar/dist/fullcalendar.min.js",
         "assets/adminbag/assets/js/vendor/lib/jquery-ui.custom.min.js",
         "assets/adminbag/assets/js/vendor/select2.min.js",
-        "assets/adminbag/assets/js/main.js"
+        "assets/adminbag/assets/js/main.js",
+        "assets/js/modals.js",
+        "assets/js/bootstrap-material-datetimepicker.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

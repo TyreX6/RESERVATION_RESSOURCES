@@ -16,7 +16,7 @@ const routes: Routes = [
     children: [
       {
         path: 'logged',
-        redirectTo: 'accueil',
+        redirectTo: 'reservation/add',
         pathMatch: 'full'
       },
       {
@@ -38,13 +38,13 @@ const routes: Routes = [
         data: {title: 'Search'}
       },
       {
-        path: 'resources/list',
+        path: 'resources/list/:category',
         component: ListResourcesComponent,
         // canActivate: [AuthGuard],
         data: {title: 'List Resources'}
       },
       {
-        path: 'resources/list/:category',
+        path: 'resources/list',
         component: ListResourcesComponent,
         // canActivate: [AuthGuard],
         data: {title: 'List Resources'}
@@ -63,7 +63,7 @@ const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'accueil'
+        redirectTo: 'reservation/add'
       },
     ]
   },

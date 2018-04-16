@@ -4,86 +4,42 @@
       <div class="page-content">
         <div class="row wrapper border-bottom page-heading">
           <div class="col-lg-12">
-            <h2> Calendar </h2>
+            <h2> Ajouter réservation </h2>
             <ol class="breadcrumb">
-              <li><a href="index.html">Home</a></li>
-              <li><a> Page Layouts </a></li>
-              <li class="active"><strong>Calendar</strong></li>
+              <li><a href="#">Accueil</a></li>
+              <li class="active"><strong>Ajouter réservation</strong></li>
             </ol>
           </div>
         </div>
         <div class="wrapper-content ">
           <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-12">
               <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                  <h5>Draggable Events </h5>
-                  <div class="ibox-tools"><a data-target="#demo1" data-toggle="collapse" class="collapse-link"> <i
-                    class="fa fa-chevron-up"></i> <i class="fa fa-chevron-down"></i> </a> <a class="dropdown-toggle"
-                                                                                             data-toggle="dropdown"
-                                                                                             href="#"> <i
-                    class="fa fa-wrench"></i> </a>
-                    <ul class="dropdown-menu dropdown-user">
-                      <li><a href="#">Config option 1</a></li>
-                      <li><a href="#">Config option 2</a></li>
-                    </ul>
-                    <!-- /dropdown-menu -->
-                    <a class="close-link"> <i class="fa fa-times"></i> </a></div>
-                  <!-- ibox-tools -->
-                </div>
                 <!-- / ibox-title -->
                 <div id="demo1" class="ibox-content collapse in">
                   <div class="demo-container">
                     <div class="widgets-container">
-                      <!--<div class="form-group">-->
-                      <!--<label (click)="changed()"  class="col-md-2 control-label">Dispositifs</label>-->
-                      <!--<form>-->
-                      <!--<div class="col-md-5 input-group" >-->
-                      <!--<select name="resource" class="_select form-control" [(ngModel)]="selected">-->
-                      <!--<optgroup *ngFor="let category of categories" label="{{category.name}}">-->
-                      <!--<option *ngFor="let resource of category.ressource" [value]="resource.id">{{resource.modele}}</option>-->
-                      <!--</optgroup>-->
-                      <!--</select>-->
-                      <!--</div>-->
-                      <!--<div>{{selected}}</div>-->
-                      <!--</form>-->
-                      <!--</div>-->
-
                       <div class="row">
-                        <select2 class="select2" [cssImport]=false [data]="exampleData" [width]="240" style="width: 100% !important;"
-                                 (valueChanged)="changed($event)" [value]="startValue"></select2>
-                      </div>
+                        <div class="col-md-4">
+                          <h4>Catégories</h4>
+                          <select2 class="select2-active" [cssImport]=true [data]="categoriesData" [width]="300"
+                                   (valueChanged)="categoryChanged($event)"></select2>
+                        </div>
+                        <div class="col-md-4">
+                          <h4>Ressources</h4>
+                          <select2 [cssImport]=true [data]="resourcesData" [width]="300"
+                                   (valueChanged)="changed($event)" [value]="startValue"></select2>
+                        </div>
 
-                      <div class="row">
-                        <button (click)="clearEvents()" type="button"
-                                class="btn btn-1d m-t-10 bg-green-blue btn-block waves-effect waves-light save-category">
-                          <i class="ti-plus"></i> Clear events
-                        </button>
-                        <button (click)="loadevents()" type="button"
-                                class="btn btn-1d m-t-10 bg-green-blue btn-block waves-effect waves-light save-category">
-                          <i class="ti-plus"></i> Ajouter une réservation
-                        </button>
-                      </div>
-
-
-                      <p>Drag a event and drop into callendar.</p>
-
-                      <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                          <div id="calendar-events" class="m-t-20">
-
-                          </div>
-                          <!-- checkbox -->
-                          <div class="checkbox">
-                            <input id="drop-remove" type="checkbox" checked>
-                            <label for="drop-remove">
-                              Supprimer aprés glissement
-                            </label>
+                        <div class="col-md-4">
+                          <div class="button-demo js-modal-buttons">
+                            <button type="button" class="btn bg-teal top20 right" data-color="teal"><i
+                              class="fa fa-plus"></i></button>
                           </div>
                         </div>
-                      </div>
 
-                      <!-- Drag a event list-->
+
+                      </div>
                       <!--<div id="external-events">-->
                       <!--<div class='fc-event'>My Event 1</div>-->
                       <!--<div class='fc-event'>My Event 2</div>-->
@@ -100,7 +56,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-12">
               <div class="ibox float-e-margins">
                 <div id="demo2" class="ibox-content collapse in">
                   <div class="demo-container">
@@ -110,17 +66,19 @@
                       <!--<div id="calendar-container">-->
                       <!--<div id="calendar"></div>-->
                       <!--</div>-->
+                      <!--TODO  eventResize update parameter -->
                       <p>Display event : {{displayEvent | json}}</p>
                       <div *ngIf="calendarOptions">
                         <ng-fullcalendar #ucCalendar [options]="calendarOptions"
                                          (eventClick)="eventClick($event.detail)"
+                                         (select)="calendarClick($event.detail)"
+                                         (eventResize)="resizeEvent($event.detail)"
                                          (eventDrop)="updateEvent($event.detail)"
-                                         (eventResize)="updateEvent($event.detail)" (dayClick)="dayClick($event.detail)"
+                                         (dayClick)="dayClick($event.detail)"
                                          (clickButton)="clickButton($event.detail)"
                                          [(eventsModel)]="events">
                         </ng-fullcalendar>
                       </div>
-
                       <!--<div style='clear:both'></div>-->
                     </div>
                   </div>
@@ -147,34 +105,57 @@
   </div>
   <!-- Go top -->
 </section>
-<!--<section class="content">-->
-<!--<div class="container-fluid">-->
-<!--<div class="row wrapper border-bottom page-heading">-->
-<!--<div class="col-lg-12">-->
-<!--<h2> Calendar </h2>-->
-<!--<ol class="breadcrumb">-->
-<!--<li><a href="#">Accueil</a></li>-->
-<!--<li><a href="#"> Réservation </a></li>-->
-<!--<li class="active"><strong>Ajouter réservation</strong></li>-->
-<!--</ol>-->
-<!--</div>-->
-<!--</div>-->
 
 
-<!--<a (click)="loadevents()"> loadevents</a>-->
-<!--<p>Display event : {{displayEvent | json}}</p>-->
-<!--<div *ngIf="calendarOptions">-->
-<!--<ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)"-->
-<!--(eventDrop)="updateEvent($event.detail)"-->
-<!--(eventResize)="updateEvent($event.detail)" (dayClick)="dayClick($event.detail)"-->
-<!--(clickButton)="clickButton($event.detail)" [(eventsModel)]="events">-->
+<!-- For Material Design Colors -->
+<div class="modal fade" id="mdModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="defaultModalLabel">Ajouter une réservation</h4>
+      </div>
+      <div class="modal-body">
 
-<!--</ng-fullcalendar>-->
-<!--</div>-->
-<!--</div>-->
+        <div class="row">
+          <label class="col-md-6">
+            Date debut réservation:
+          </label>
+          <div class="col-md-6">
+            <input [min]="min" [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12"
+                   [(ngModel)]="selectedMoments"
+                   [selectMode]="'rangeFrom'">
+          </div>
+          <owl-date-time [pickerMode]="'dialog'" #dt12></owl-date-time>
 
-<!--</section>-->
+        </div>
+
+        <div class="row top20">
+        <label class="col-md-6">
+          Date fin réservation:
+        </label>
+          <div class="col-md-6">
+            <input [min]="min" [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13"
+                   [(ngModel)]="selectedMoments"
+                   [selectMode]="'rangeTo'">
+          </div>
+          <owl-date-time [pickerMode]="'dialog'" #dt13></owl-date-time>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link waves-effect" [disabled]="!selectedMoments" (click)="showTime()">SAVE CHANGES</button>
+        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-
+    $('.js-modal-buttons .btn').on('click', function () {
+      var color = $(this).data('color');
+      $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
+      $('#mdModal').modal('show');
+    });
 </script>

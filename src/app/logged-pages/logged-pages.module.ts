@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { SharedModule } from "./shared/shared.module";
 import { HomeComponent } from './home/home.component';
 import { MyNewComponentComponent } from './my-new-component/my-new-component.component';
-import {AuthGuard} from "./_guard/auth.guard";
+import {AuthGuard} from "./_guard";
 import {LoggedPagesRoutingModule} from "./logged-pages-routing.module";
 import {HttpClientModule} from "@angular/common/http";
 import { LoggedPagesComponent } from './logged-pages.component';
@@ -21,15 +23,31 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { EventSesrvice } from './add-reservation/event.service';
 import { KeysPipePipe } from './list-resources/keys-pipe.pipe';
+
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import {DataService} from "./services/data.service";
+
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
   imports: [
     CommonModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      closeButton:true,
+      progressBar:true,
+      preventDuplicates: false,
+    }), // ToastrModule added
     SharedModule,
     FormsModule,
     LoggedPagesRoutingModule,
     HttpClientModule,
     Select2Module,
-    FullCalendarModule
+    FullCalendarModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    NgbModule.forRoot(),
   ],
   declarations: [
     HomeComponent,
@@ -41,6 +59,6 @@ import { KeysPipePipe } from './list-resources/keys-pipe.pipe';
     ListResourcesComponent,
     KeysPipePipe,
   ],
-  providers: [AuthGuard,CategoriesService,ReservationsService,ResourcesService,CalendarInitService,EventSesrvice],
+  providers: [AuthGuard,CategoriesService,ReservationsService,ResourcesService,CalendarInitService,EventSesrvice,DataService],
 })
 export class LoggedPagesModule { }

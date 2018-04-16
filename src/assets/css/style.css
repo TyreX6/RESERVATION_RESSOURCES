@@ -13,7 +13,7 @@
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   border: none;
   position: fixed;
-  top: 0;
+  top: -20px;
   left: 0;
   z-index: 12;
   width: 100%;
@@ -3144,7 +3144,7 @@ a {
 }
 
 section.content {
-  margin: 70px 0 0 220px;
+  margin: 45px 0 0 220px;
   padding-bottom: 50px;
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
@@ -5412,157 +5412,157 @@ section.content {
 }
 
 /* Nav Tabs ==================================== */
-.nav-tabs {
-  border-bottom: 2px solid #eee;
-}
+/*.nav-tabs {*/
+  /*border-bottom: 2px solid #eee;*/
+/*}*/
 
-.nav-tabs > li {
-  position: relative;
-  top: 3px;
-  left: -2px;
-}
+/*.nav-tabs > li {*/
+  /*position: relative;*/
+  /*top: 3px;*/
+  /*left: -2px;*/
+/*}*/
 
-.nav-tabs > li > a {
-  border: none !important;
-  color: #999 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  border-radius: 0;
-}
+/*.nav-tabs > li > a {*/
+  /*border: none !important;*/
+  /*color: #999 !important;*/
+  /*-webkit-border-radius: 0;*/
+  /*-moz-border-radius: 0;*/
+  /*-ms-border-radius: 0;*/
+  /*border-radius: 0;*/
+/*}*/
 
-.nav-tabs > li > a:hover, .nav-tabs > li > a:active, .nav-tabs > li > a:focus {
-  background-color: transparent !important;
-}
+/*.nav-tabs > li > a:hover, .nav-tabs > li > a:active, .nav-tabs > li > a:focus {*/
+  /*background-color: transparent !important;*/
+/*}*/
 
-.nav-tabs > li > a:before {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 0;
-  border-bottom: 2px solid #2196F3;
-  bottom: 2px;
-  -moz-transform: scaleX(0);
-  -ms-transform: scaleX(0);
-  -o-transform: scaleX(0);
-  -webkit-transform: scaleX(0);
-  transform: scaleX(0);
-  -moz-transition: 0.1s ease-in;
-  -o-transition: 0.1s ease-in;
-  -webkit-transition: 0.1s ease-in;
-  transition: 0.1s ease-in;
-}
+/*.nav-tabs > li > a:before {*/
+  /*content: '';*/
+  /*position: absolute;*/
+  /*left: 0;*/
+  /*width: 100%;*/
+  /*height: 0;*/
+  /*border-bottom: 2px solid #2196F3;*/
+  /*bottom: 2px;*/
+  /*-moz-transform: scaleX(0);*/
+  /*-ms-transform: scaleX(0);*/
+  /*-o-transform: scaleX(0);*/
+  /*-webkit-transform: scaleX(0);*/
+  /*transform: scaleX(0);*/
+  /*-moz-transition: 0.1s ease-in;*/
+  /*-o-transition: 0.1s ease-in;*/
+  /*-webkit-transition: 0.1s ease-in;*/
+  /*transition: 0.1s ease-in;*/
+/*}*/
 
-.nav-tabs > li > a .material-icons {
-  position: relative;
-  top: 7px;
-  margin-bottom: 8px;
-}
+/*.nav-tabs > li > a .material-icons {*/
+  /*position: relative;*/
+  /*top: 7px;*/
+  /*margin-bottom: 8px;*/
+/*}*/
 
-.nav-tabs li.active a {
-  color: #222 !important;
-}
+/*.nav-tabs li.active a {*/
+  /*color: #222 !important;*/
+/*}*/
 
-.nav-tabs li.active a:hover, .nav-tabs li.active a:active, .nav-tabs li.active a:focus {
-  background-color: transparent !important;
-}
+/*.nav-tabs li.active a:hover, .nav-tabs li.active a:active, .nav-tabs li.active a:focus {*/
+  /*background-color: transparent !important;*/
+/*}*/
 
-.nav-tabs li.active a:before {
-  -moz-transform: scaleX(1);
-  -ms-transform: scaleX(1);
-  -o-transform: scaleX(1);
-  -webkit-transform: scaleX(1);
-  transform: scaleX(1);
-}
+/*.nav-tabs li.active a:before {*/
+  /*-moz-transform: scaleX(1);*/
+  /*-ms-transform: scaleX(1);*/
+  /*-o-transform: scaleX(1);*/
+  /*-webkit-transform: scaleX(1);*/
+  /*transform: scaleX(1);*/
+/*}*/
 
-.nav-tabs + .tab-content {
-  padding: 15px 0;
-}
+/*.nav-tabs + .tab-content {*/
+  /*padding: 15px 0;*/
+/*}*/
 
-.nav-tabs.tab-col-red > li > a:before {
-  border-bottom: 2px solid #F44336;
-}
+/*.nav-tabs.tab-col-red > li > a:before {*/
+  /*border-bottom: 2px solid #F44336;*/
+/*}*/
 
-.nav-tabs.tab-col-pink > li > a:before {
-  border-bottom: 2px solid #E91E63;
-}
+/*.nav-tabs.tab-col-pink > li > a:before {*/
+  /*border-bottom: 2px solid #E91E63;*/
+/*}*/
 
-.nav-tabs.tab-col-purple > li > a:before {
-  border-bottom: 2px solid #9C27B0;
-}
+/*.nav-tabs.tab-col-purple > li > a:before {*/
+  /*border-bottom: 2px solid #9C27B0;*/
+/*}*/
 
-.nav-tabs.tab-col-deep-purple > li > a:before {
-  border-bottom: 2px solid #673AB7;
-}
+/*.nav-tabs.tab-col-deep-purple > li > a:before {*/
+  /*border-bottom: 2px solid #673AB7;*/
+/*}*/
 
-.nav-tabs.tab-col-indigo > li > a:before {
-  border-bottom: 2px solid #3F51B5;
-}
+/*.nav-tabs.tab-col-indigo > li > a:before {*/
+  /*border-bottom: 2px solid #3F51B5;*/
+/*}*/
 
-.nav-tabs.tab-col-blue > li > a:before {
-  border-bottom: 2px solid #2196F3;
-}
+/*.nav-tabs.tab-col-blue > li > a:before {*/
+  /*border-bottom: 2px solid #2196F3;*/
+/*}*/
 
-.nav-tabs.tab-col-light-blue > li > a:before {
-  border-bottom: 2px solid #03A9F4;
-}
+/*.nav-tabs.tab-col-light-blue > li > a:before {*/
+  /*border-bottom: 2px solid #03A9F4;*/
+/*}*/
 
-.nav-tabs.tab-col-cyan > li > a:before {
-  border-bottom: 2px solid #00BCD4;
-}
+/*.nav-tabs.tab-col-cyan > li > a:before {*/
+  /*border-bottom: 2px solid #00BCD4;*/
+/*}*/
 
-.nav-tabs.tab-col-teal > li > a:before {
-  border-bottom: 2px solid #009688;
-}
+/*.nav-tabs.tab-col-teal > li > a:before {*/
+  /*border-bottom: 2px solid #009688;*/
+/*}*/
 
-.nav-tabs.tab-col-green > li > a:before {
-  border-bottom: 2px solid #4CAF50;
-}
+/*.nav-tabs.tab-col-green > li > a:before {*/
+  /*border-bottom: 2px solid #4CAF50;*/
+/*}*/
 
-.nav-tabs.tab-col-light-green > li > a:before {
-  border-bottom: 2px solid #8BC34A;
-}
+/*.nav-tabs.tab-col-light-green > li > a:before {*/
+  /*border-bottom: 2px solid #8BC34A;*/
+/*}*/
 
-.nav-tabs.tab-col-lime > li > a:before {
-  border-bottom: 2px solid #CDDC39;
-}
+/*.nav-tabs.tab-col-lime > li > a:before {*/
+  /*border-bottom: 2px solid #CDDC39;*/
+/*}*/
 
-.nav-tabs.tab-col-yellow > li > a:before {
-  border-bottom: 2px solid #ffe821;
-}
+/*.nav-tabs.tab-col-yellow > li > a:before {*/
+  /*border-bottom: 2px solid #ffe821;*/
+/*}*/
 
-.nav-tabs.tab-col-amber > li > a:before {
-  border-bottom: 2px solid #FFC107;
-}
+/*.nav-tabs.tab-col-amber > li > a:before {*/
+  /*border-bottom: 2px solid #FFC107;*/
+/*}*/
 
-.nav-tabs.tab-col-orange > li > a:before {
-  border-bottom: 2px solid #FF9800;
-}
+/*.nav-tabs.tab-col-orange > li > a:before {*/
+  /*border-bottom: 2px solid #FF9800;*/
+/*}*/
 
-.nav-tabs.tab-col-deep-orange > li > a:before {
-  border-bottom: 2px solid #FF5722;
-}
+/*.nav-tabs.tab-col-deep-orange > li > a:before {*/
+  /*border-bottom: 2px solid #FF5722;*/
+/*}*/
 
-.nav-tabs.tab-col-brown > li > a:before {
-  border-bottom: 2px solid #795548;
-}
+/*.nav-tabs.tab-col-brown > li > a:before {*/
+  /*border-bottom: 2px solid #795548;*/
+/*}*/
 
-.nav-tabs.tab-col-grey > li > a:before {
-  border-bottom: 2px solid #9E9E9E;
-}
+/*.nav-tabs.tab-col-grey > li > a:before {*/
+  /*border-bottom: 2px solid #9E9E9E;*/
+/*}*/
 
-.nav-tabs.tab-col-blue-grey > li > a:before {
-  border-bottom: 2px solid #607D8B;
-}
+/*.nav-tabs.tab-col-blue-grey > li > a:before {*/
+  /*border-bottom: 2px solid #607D8B;*/
+/*}*/
 
-.nav-tabs.tab-col-black > li > a:before {
-  border-bottom: 2px solid #000000;
-}
+/*.nav-tabs.tab-col-black > li > a:before {*/
+  /*border-bottom: 2px solid #000000;*/
+/*}*/
 
-.nav-tabs.tab-col-white > li > a:before {
-  border-bottom: 2px solid #ffffff;
-}
+/*.nav-tabs.tab-col-white > li > a:before {*/
+  /*border-bottom: 2px solid #ffffff;*/
+/*}*/
 
 /* Thumbnails ================================== */
 .thumbnail {
@@ -9027,7 +9027,7 @@ fieldset[disabled] .form-control {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   border: none;
   position: fixed;
-  top: 0;
+  top: -25px;
   left: 0;
   z-index: 12;
   width: 100%;
@@ -9050,7 +9050,7 @@ fieldset[disabled] .form-control {
   color: #fff;
   width: 20px;
   height: 20px;
-  margin-top: -4px;
+  margin-top: 8px;
   margin-right: 17px;
 }
 
@@ -9076,7 +9076,7 @@ fieldset[disabled] .form-control {
   font-family: 'Material Icons';
   font-size: 24px;
   position: absolute;
-  top: 18px;
+  top: 30px;
   left: 20px;
   margin-right: 10px;
   -moz-transform: scale(0);
@@ -10031,9 +10031,9 @@ fieldset[disabled] .form-control {
   width: 220px;
   overflow: hidden;
   display: inline-block;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 40px);
   position: fixed;
-  top: 70px;
+  top: 40px;
   left: 0;
   -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
@@ -10305,10 +10305,10 @@ fieldset[disabled] .form-control {
 
 .right-sidebar {
   width: 280px;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 40px);
   position: fixed;
   right: -300px;
-  top: 70px;
+  top: 40px;
   background: #fdfdfd;
   z-index: 11 !important;
   -webkit-box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.1);

@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed|Yanone+Kaffeesatz|Oxygen");
+@import "../../../assets/css/ngx-toastr/toaster.css";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
 /*@import url("../assets/calendar/dist/fullcalendar.css");*/
 .page-heading {
   background: #fff none repeat scroll 0 0;
@@ -13,4 +15,26 @@
   min-width: 100%;
   max-width: 100%;
 }
+.bg-orange{
+  background-color: #ad4345;
+}
+.bg-success{
+  background-color: #469348!important;
+}
+.modal{
+  z-index: 1050;
+}
+input{
+  color:#777 !important;
+}
 
+.dark-modal .modal-content {
+  background-color: #292b2c;
+  color: white;
+}
+.dark-modal .close {
+  color: white;
+}
+.light-blue-backdrop {
+  background-color: #5cb3fd;
+}

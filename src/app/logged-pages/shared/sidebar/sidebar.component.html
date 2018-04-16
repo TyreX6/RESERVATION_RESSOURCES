@@ -7,9 +7,10 @@
         <img src="assets/images/user.png" width="48" height="48" alt="User" />
       </div>
       <div class="info-container">
-        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.username}}</div>
-        <div class="email">john.doe@example.com</div>
-
+        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.username | uppercase}}</div>
+        <div class="email">{{user.email}}</div>
+        <div class="email">
+          {{user.roles[0]}}</div>
       </div>
     </div>
     <!-- #User Info -->
@@ -17,10 +18,10 @@
     <div class="menu">
       <ul class="list">
         <!--<li class="header">MAIN NAVIGATION</li>-->
-        <li [routerLink]="['accueil']" routerLinkActive="active">
-          <a>
-            <i class="material-icons">home</i>
-            <span>Accueil</span>
+        <li [routerLink]="['reservation/add']" routerLinkActive="active">
+          <a  >
+            <i class="material-icons">date_range</i>
+            <span>Réserver ressource</span>
           </a>
         </li>
         <li [routerLink]="['profile']" routerLinkActive="active">
@@ -30,30 +31,26 @@
           </a>
         </li>
 
-        <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+        <li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">view_headline</i>
             <span>Liste des ressources</span>
           </a>
           <ul class="ml-menu">
-            <li [routerLink]="['resources/list']" routerLinkActive="bg-grey">
-              <a  class="menu-toggle">
+            <li [routerLink]="['resources/list']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+              <a >
                 <span>Tous</span>
               </a>
             </li>
-            <li [routerLink]="['resources/list/category']" routerLinkActive="bg-grey">
-              <a href="javascript:void(0);" class="menu-toggle">
-                <span>Infobox</span>
+            <li *ngFor="let categ of categories" [routerLink]="['resources/list/',categ.id]">
+              <a >
+                <span>{{categ.name}}</span>
               </a>
             </li>
+
           </ul>
         </li>
-        <li [routerLink]="['reservation/add']" routerLinkActive="active">
-          <a  >
-            <i class="material-icons">date_range</i>
-            <span>Réserver ressource</span>
-          </a>
-        </li>
+
         <li [routerLink]="['search']" routerLinkActive="active">
           <a >
             <i class="material-icons">search</i>
