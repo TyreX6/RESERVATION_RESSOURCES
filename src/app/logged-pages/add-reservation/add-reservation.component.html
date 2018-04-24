@@ -33,7 +33,7 @@
 
                         <div class="col-md-4">
                           <div class="button-demo js-modal-buttons">
-                            <button type="button" class="btn bg-teal top20 right" data-color="teal"><i
+                            <button (click)="openModal()" type="button" class="btn bg-teal top20 right" data-color="teal"><i
                               class="fa fa-plus"></i></button>
                           </div>
                         </div>
@@ -107,55 +107,57 @@
 </section>
 
 
-<!-- For Material Design Colors -->
-<div class="modal fade" id="mdModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="defaultModalLabel">Ajouter une réservation</h4>
-      </div>
-      <div class="modal-body">
+<!--&lt;!&ndash; For Material Design Colors &ndash;&gt;-->
+<!--<div class="modal fade" id="mdModal" tabindex="-1" role="dialog">-->
+  <!--<div class="modal-dialog" role="document">-->
+    <!--<div class="modal-content">-->
+      <!--<div class="modal-header">-->
+        <!--<h4 class="modal-title" id="defaultModalLabel">Ajouter une réservation</h4>-->
+      <!--</div>-->
+      <!--<div class="modal-body">-->
 
-        <div class="row">
-          <label class="col-md-6">
-            Date debut réservation:
-          </label>
-          <div class="col-md-6">
-            <input [min]="min" [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12"
-                   [(ngModel)]="selectedMoments"
-                   [selectMode]="'rangeFrom'">
-          </div>
-          <owl-date-time [pickerMode]="'dialog'" #dt12></owl-date-time>
+        <!--<div class="row">-->
+          <!--<label class="col-md-6">-->
+            <!--Date debut réservation:-->
+          <!--</label>-->
+          <!--<div class="col-md-6">-->
+            <!--<input [min]="min" [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12"-->
+                   <!--[(ngModel)]="selectedMoments"-->
+                   <!--[selectMode]="'rangeFrom'">-->
+          <!--</div>-->
+          <!--<owl-date-time [pickerMode]="'dialog'" #dt12></owl-date-time>-->
 
-        </div>
+        <!--</div>-->
 
-        <div class="row top20">
-        <label class="col-md-6">
-          Date fin réservation:
-        </label>
-          <div class="col-md-6">
-            <input [min]="min" [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13"
-                   [(ngModel)]="selectedMoments"
-                   [selectMode]="'rangeTo'">
-          </div>
-          <owl-date-time [pickerMode]="'dialog'" #dt13></owl-date-time>
+        <!--<div class="row top20">-->
+          <!--<label class="col-md-6">-->
+            <!--Date fin réservation:-->
+          <!--</label>-->
+          <!--<div class="col-md-6">-->
+            <!--<input [min]="min" [owlDateTimeTrigger]="dt13" [owlDateTime]="dt13"-->
+                   <!--[(ngModel)]="selectedMoments"-->
+                   <!--[selectMode]="'rangeTo'">-->
+          <!--</div>-->
+          <!--<owl-date-time [pickerMode]="'dialog'" #dt13></owl-date-time>-->
 
-        </div>
+        <!--</div>-->
 
-      </div>
+      <!--</div>-->
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-link waves-effect" [disabled]="!selectedMoments" (click)="showTime()">SAVE CHANGES</button>
-        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-      </div>
-    </div>
-  </div>
-</div>
+      <!--<div class="modal-footer">-->
+        <!--<button type="button" class="btn btn-link waves-effect" [disabled]="!selectedMoments" (click)="showTime()">SAVE-->
+          <!--CHANGES-->
+        <!--</button>-->
+        <!--<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
 
-<script>
-    $('.js-modal-buttons .btn').on('click', function () {
-      var color = $(this).data('color');
-      $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
-      $('#mdModal').modal('show');
-    });
-</script>
+<!--<script>-->
+  <!--$('.js-modal-buttons .btn').on('click', function () {-->
+    <!--var color = $(this).data('color');-->
+    <!--$('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);-->
+    <!--$('#mdModal').modal('show');-->
+  <!--});-->
+<!--</script>-->

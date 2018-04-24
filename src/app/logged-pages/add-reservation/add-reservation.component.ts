@@ -1,7 +1,9 @@
-import {Component, OnInit, ViewChild, AfterViewChecked, ViewEncapsulation} from '@angular/core';
+///<reference path="../../../../node_modules/@angular/core/src/metadata/directives.d.ts"/>
+import {Component, OnInit, ViewChild, AfterViewChecked, ViewEncapsulation, TemplateRef} from '@angular/core';
 import {CalendarComponent} from 'ng-fullcalendar';
 import {Options} from 'fullcalendar';
 import {ToastrService} from 'ngx-toastr';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 
 import {EventSesrvice} from './event.service';
 import * as $ from 'jquery';
@@ -15,7 +17,9 @@ import {ResourcesService} from "../services/resources.service";
 import {ReservationsService} from "../services/reservations.service";
 import * as moment from 'moment';
 import {GlobalService} from "../../global.service";
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {Subject} from 'rxjs/Subject';
+import {AddResModalContent} from "./AddResModalContent";
+
 @Component({
   selector: 'app-add-reservation',
   templateUrl: './add-reservation.component.html',
@@ -23,6 +27,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AddReservationComponent implements OnInit, AfterViewChecked {
   closeResult: string;
+  bsModalRef: BsModalRef;
   private deviceID: any;
   private userID: any;
   private user: any;
@@ -34,6 +39,7 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
   public startValue: string;
   public deviceSelected: any;
   calendarOptions: Options;
+
   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
   public selectedMoments = [
     new Date(),
@@ -48,50 +54,28 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
               private spinnerService: Ng4LoadingSpinnerService,
               private _resourcesService: ResourcesService,
               private _reservationService: ReservationsService,
-              private modalService: NgbModal) {
+              private modalService: BsModalService) {
 
     this.userID = this._globalService.currentUser.id;
     this.user = this._globalService.currentUser;
     this.route.paramMap.subscribe(params => {
 
-      console.log(params);
       this.deviceID = params.get('id');
 
     });
 
-    // if (this.id) {
-    //   this.changed({value:this.id});
-    // }
-    // else {
     this._resourcesService.GetCategorizedResourcesList().subscribe((result) => {
+      console.log(result);
       this.categories = result;
       this.categoriesData = this.getChangeList(result);
 
     }, (err) => {
       console.log(err);
     });
-    // }
 
 
   }
 
-  open(content) {
-    this.modalService.open(content).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
 
   ngOnInit() {
     this.calendarOptions = this._calendarService.calendar_options(this.events);
@@ -108,49 +92,46 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
     list = this.categories.find(function (element) {
       return element.id == e.value;
     });
-    console.log(list.ressource);
+
     this.resourcesData = this.getChangeList(list.ressource);
   }
 
 
+  /**
+   * On resource list change
+   * @param e
+   */
   public changed(e: any): void {
     this.spinnerService.show();
 
     this.deviceSelected = e;
-    this._reservationService.GetReservationsList(parseInt(e.value)).subscribe((result) => {
-      this.events = [];
-
-      result.forEach((element) => {
-        this.events.push(
-          {
-            id: this.events.length,
-            id_res: element.id,
-            user: element.user.id,
-            title: element.dispositif.modele + " pour " + element.user.username,
-            start: moment(element.date_debut),
-            end: moment(element.date_fin),
-            editable: element.user.id === this.userID && Date.parse(element.date_fin) > Date.now()
-          });
-      });
-
-      this.spinnerService.hide();
-
-    });
+    this.refreshCalendar(e.value);
   }
 
 
-  getChangeList(categories: any[]): Select2OptionData[] {
+  /**
+   * On category list change
+   * @param {any[]} categories
+   * @returns {Select2OptionData[]}
+   */
+  public getChangeList(categories: any[]): Select2OptionData[] {
     let list: any[] = [];
     categories.forEach(function (element) {
       list.push({
         id: element.id,
-        text: element.name ? element.name : element.modele,
+        text: element.name ? element.name : element.model,
       });
     });
     return list;
   }
 
 
+  /**
+   * On Calendar select Event
+   * After making choice of the range desired to be reserved
+   * A new reservation will be added
+   * @param detail
+   */
   calendarClick(detail: any) {
     this._calendarService.calendarClick(this.user, detail, this.ucCalendar, this.deviceSelected, this.events);
   }
@@ -168,8 +149,9 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
     console.log(model);
   }
 
-  eventClick(model: any) {
-    console.log(model);
+  eventClick(model: any, template: TemplateRef<any>) {
+
+    console.log("event click");
     model = {
       event: {
         id: model.event.id,
@@ -186,10 +168,53 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
       duration: {}
     };
     this.displayEvent = model;
+    const initialState = {id: model.event.id, ucCalendar: this.ucCalendar};
+
+
+    if (model.event.user == this.user.id && new Date(model.event.start) > new Date()) {
+      this.bsModalRef = this.modalService.show(ModalContentComponent, {initialState});
+      this.bsModalRef.content.id = model.event.id_res;
+      this.bsModalRef.content.selectedMoments = [new Date(model.event.start), new Date(model.event.end)];
+
+      this.bsModalRef.content.onClose.subscribe(result => {
+        this.ucCalendar.fullCalendar("removeEvents", [model.event.id]);
+        this.events = this.events.filter(function (returnableObjects) {
+          return returnableObjects.id !== model.event.id;
+        });
+        this.refreshCalendar(this.deviceSelected.value);
+
+        console.log('after remove', this.events);
+        //this.events[model.event.id]={};
+      });
+
+      this.bsModalRef.content.onUpdate.subscribe(result => {
+        this.spinnerService.show();
+        let oldStartMoment = moment(model.event.start);
+        let oldEndMoment = moment(model.event.end);
+        model.event.start = moment(result[0]);
+        model.event.end = moment(result[1]);
+        this._calendarService.updateEvent(model, this.ucCalendar, this.events).subscribe((success) => {
+          if (success) {
+            this.bsModalRef.hide();
+          }
+          else {
+            this.ucCalendar.fullCalendar('removeEvents', [model.event.id]);
+            model.event.start = oldStartMoment;
+            model.event.end = oldEndMoment;
+            model.event.className = "bg-danger";
+            this.ucCalendar.fullCalendar('renderEvent', model.event);
+          }
+          this.spinnerService.hide();
+        });
+
+      });
+    }
   }
 
   updateEvent(model: any) {
-    this.displayEvent = this._calendarService.updateEvent(model, this.ucCalendar, this.events);
+    this._calendarService.updateEvent(model, this.ucCalendar, this.events).subscribe((success) => {
+      this.displayEvent = success;
+    });
   }
 
   resizeEvent(model: any) {
@@ -203,10 +228,10 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
 
 
   jqueryCall() {
-  //   $('#date-end').bootstrapMaterialDatePicker({ weekStart : 0 });
-  //   $('#date-start').bootstrapMaterialDatePicker({ weekStart : 0 }).on('change', function(e, date){
-  //   $('#date-end').bootstrapMaterialDatePicker('setMinDate', date);
-  // });
+    //   $('#date-end').bootstrapMaterialDatePicker({ weekStart : 0 });
+    //   $('#date-start').bootstrapMaterialDatePicker({ weekStart : 0 }).on('change', function(e, date){
+    //   $('#date-end').bootstrapMaterialDatePicker('setMinDate', date);
+    // });
     /* initialize the external events
      -----------------------------------------------------------------*/
     // $('.fc-event').each(function () {
@@ -227,15 +252,147 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
 
   showTime() {
     let model = {
-        id: this.events.length,
-        id_res: null,
-        user: this.user.id,
-        title: this.deviceSelected.modele + " pour " + this.user.username,
-        start: moment(this.selectedMoments[0]),
-        end: moment(this.selectedMoments[1]),
-        editable: true
+      id: this.events.length,
+      id_res: null,
+      user: this.user.id,
+      title: this.deviceSelected.model + " pour " + this.user.username,
+      start: moment(this.selectedMoments[0]),
+      end: moment(this.selectedMoments[1]),
+      editable: true
     };
     this._calendarService.calendarClick(this.user, model, this.ucCalendar, this.deviceSelected, this.events);
     console.log(moment(this.selectedMoments[0]));
   }
+
+  refreshCalendar(id: number) {
+    this._reservationService.GetReservationsList(id).subscribe((result) => {
+      this.events = [];
+
+      result.forEach((element) => {
+        this.events.push(
+          {
+            id: this.events.length,
+            id_res: element.id,
+            user: element.user.id,
+            title: "Réservé pour " + element.user.username,
+            start: moment(element.date_debut),
+            end: moment(element.date_fin),
+            resource: element.ressource.id,
+            className: element.user.id == this.userID ? ["bg-success"] : ["bg-red"],
+            editable: element.user.id === this.userID && Date.parse(element.date_fin) > Date.now()
+          });
+      });
+      console.log("initial", this.events);
+
+      this.spinnerService.hide();
+
+    });
+  }
+
+  openModal() {
+    const initialState = {ucCalendar: this.ucCalendar};
+    this.bsModalRef = this.modalService.show(AddResModalContent, {initialState});
+    this.bsModalRef.content.onAdd.subscribe(result => {
+      this.spinnerService.show();
+      let detail: any = {start: moment(result[0]), end: moment(result[1])};
+      this._calendarService.calendarClick(this.user, detail, this.ucCalendar, this.deviceSelected, this.events);
+      this.spinnerService.hide();
+      this.bsModalRef.hide();
+    });
+  }
+
 }
+
+
+@Component({
+  selector: 'modal-content',
+  template: `
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Modifier réservation</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <div class="row">
+        <label class="col-md-6">
+          Date debut réservation:
+        </label>
+        <div class="col-md-6">
+          <input [min]="min" [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11"
+                 [(ngModel)]="selectedMoments"
+                 [selectMode]="'rangeFrom'">
+        </div>
+        <owl-date-time [pickerMode]="'dialog'" #dt11></owl-date-time>
+
+      </div>
+      <div class="row top20">
+        <label class="col-md-6">
+          Date fin réservation:
+        </label>
+        <div class="col-md-6">
+          <input [min]="min" [owlDateTimeTrigger]="dt10" [owlDateTime]="dt10"
+                 [(ngModel)]="selectedMoments"
+                 [selectMode]="'rangeTo'">
+        </div>
+        <owl-date-time [pickerMode]="'dialog'" #dt10></owl-date-time>
+
+      </div>
+
+    </div>
+    <hr>
+    <div class="modal-footer">
+      <button type="button" class="btn bg-green" (click)="UpdateEvent()">Modifier</button>
+      <button type="button" class="btn bg-red" (click)="deleteEvent()">Supprimer</button>
+      <button type="button" class="btn bg-light" (click)="bsModalRef.hide()">Fermer</button>
+    </div>
+  `
+})
+export class ModalContentComponent implements OnInit {
+  id: number;
+  events: any[];
+  public selectedMoments = [];
+  public min = new Date();
+  public onClose: Subject<boolean>;
+  public onUpdate: Subject<any>;
+
+  constructor(public bsModalRef: BsModalRef,
+              private _reservationService: ReservationsService,
+              private toastr: ToastrService,
+              private spinnerService: Ng4LoadingSpinnerService,) {
+  }
+
+  ngOnInit() {
+    this.onClose = new Subject();
+    this.onUpdate = new Subject<any>();
+  }
+
+  deleteEvent() {
+    this.spinnerService.show();
+    console.log("id", this.id);
+    this._reservationService.DeleteReservation(this.id).subscribe((result) => {
+      console.log(result);
+      if (result.success == 1) {
+        this.toastr.success("Réservation supprimé", "Succée");
+        this.spinnerService.hide();
+        this.onClose.next(true);
+        this.bsModalRef.hide();
+      }
+      else {
+        this.spinnerService.hide();
+        this.toastr.error("Erreur lors du suppression", "Erreur");
+        this.onClose.next(false);
+        this.bsModalRef.hide();
+      }
+    });
+
+  }
+
+  UpdateEvent() {
+    this.onUpdate.next(this.selectedMoments);
+  }
+}
+
+
+

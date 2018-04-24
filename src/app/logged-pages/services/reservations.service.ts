@@ -5,6 +5,7 @@ import {GlobalService} from '../../global.service';
 
 import "rxjs/add/operator/map";
 import 'rxjs/add/operator/catch';
+import {IRegles} from "../models/regles";
 
 @Injectable()
 export class ReservationsService {
@@ -54,6 +55,28 @@ export class ReservationsService {
         .set("Content-Type", "application/json")
         .set("Authorization", "Bearer " + this.token)
     });
+  }
+
+
+  //------------ Delete reservation with specific ID -----------//
+  DeleteReservation(id: number): Observable<any> {
+
+    return this.http.delete<any>(this.serverAddress + 'api/reservations/delete/' + id, {
+      headers: new HttpHeaders()
+        .set("Content-Type", "application/json")
+        .set("Authorization", "Bearer " + this.token)
+    });
+  }
+
+  //------------ Retreive all rules -----------//
+  GetRegles(): Observable<IRegles> {
+
+    return this.http.get<IRegles>(this.serverAddress + 'api/regles/', {
+      headers: new HttpHeaders()
+        .set("Content-Type", "application/json")
+        .set("Authorization", "Bearer " + this.token)
+    });
+
   }
 
 

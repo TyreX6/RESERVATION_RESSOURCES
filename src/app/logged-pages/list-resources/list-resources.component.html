@@ -43,7 +43,7 @@
                               <a role="button" data-toggle="collapse" data-parent="#accordion"
                                  href="#collapse{{resource.id}}"
                                  aria-expanded="true" aria-controls="collapseOne">
-                                {{resource.modele}}
+                                {{resource.model || resource.name}}
                               </a>
                             </h4>
                             <div class="col-md-1 col-xs-1">
@@ -53,12 +53,12 @@
                             </div>
                           </div>
                         </div>
-                        <div id="collapse{{resource.id}}" [ngClass]="{'panel-collapse collapse': true, 'in': i < 1 }"
+                        <div id="collapse{{resource.id}}" [ngClass]="{'panel-collapse collapse': true, 'in': i < 0 }"
                              role="tabpanel" aria-labelledby="headingOne">
                           <div class="panel-body">
                             <ul>
                               <li *ngFor="let entry of resource | keysPipe">
-                                {{entry.key | uppercase}} : {{entry.value}}
+                                <strong>{{entry.key | uppercase}}</strong> : {{entry.value}}
                               </li>
                             </ul>
                           </div>

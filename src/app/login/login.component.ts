@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
               private spinnerService: Ng4LoadingSpinnerService) {
 
     if (_globalService.loggedIn()) {
-      this.router.navigate(['/logged/accueil']);
+      this.router.navigate(['/reservation/add']);
     }
     this.loginForm = formBuilder.group({
       'username': ['', Validators.required],
