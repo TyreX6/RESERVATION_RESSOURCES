@@ -6,7 +6,7 @@ const appRoutes: Routes = [
 
   {
     path: 'logged',
-    loadChildren: './logged-pages/logged-pages.module#LoggedPagesModule',
+    loadChildren: './main/main.module#MainModule',
   },
   {
     path: '',

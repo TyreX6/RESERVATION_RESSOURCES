@@ -2,7 +2,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Injectable} from "@angular/core";
 import {Observable as RxObservable} from "rxjs/Observable";
 
-import {GlobalService} from '../global.service';
+import {GlobalService} from '../services/global.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import "rxjs/add/operator/map";

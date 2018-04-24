@@ -3,15 +3,15 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {JwtModule} from '@auth0/angular-jwt';
-import {LoggedPagesModule} from './logged-pages/logged-pages.module';
+import {MainModule} from './main/main.module';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from "./login/login.component";
 
 import {AuthenticationService} from './login/authentication.service';
-import {GlobalService} from './global.service';
-import {Ng4LoadingSpinnerModule} from './ng4-loading-spinner';
+import {GlobalService} from './services/global.service';
+import {Ng4LoadingSpinnerModule} from './services/ng4-loading-spinner';
 
 
 export function tokenGetter() {
@@ -25,7 +25,7 @@ export function tokenGetter() {
   ],
   imports: [
     BrowserModule,
-    LoggedPagesModule,
+    MainModule,
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,

@@ -3,8 +3,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthenticationService} from './authentication.service';
 import {JwtHelperService} from '@auth0/angular-jwt';
-import {GlobalService} from "../global.service";
-import {Ng4LoadingSpinnerService} from '../ng4-loading-spinner';
+import {GlobalService} from "../services/global.service";
+import {Ng4LoadingSpinnerService} from '../services/ng4-loading-spinner';
 
 @Component({
   selector: 'app-login',
