@@ -4,6 +4,7 @@ import {ToastrService} from "ngx-toastr";
 import {Component, OnInit} from "@angular/core";
 import {ReservationsService} from "../../services/reservations.service";
 import {BsModalRef} from "ngx-bootstrap/modal";
+import * as moment from 'moment';
 
 @Component({
   selector: 'add-modal-content',
@@ -21,7 +22,7 @@ import {BsModalRef} from "ngx-bootstrap/modal";
           Date debut réservation:
         </label>
         <div class="col-md-6">
-          <input [min]="min" [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11"
+          <input [min]="minFrom" [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11"
                  [(ngModel)]="selectedMoments"
                  [selectMode]="'rangeFrom'">
         </div>
@@ -33,10 +34,15 @@ import {BsModalRef} from "ngx-bootstrap/modal";
           Date fin réservation:
         </label>
         <div class="col-md-6">
-          <input [min]="min" [owlDateTimeTrigger]="dt10" [owlDateTime]="dt10"
+          <input [min]="minTo" [owlDateTimeTrigger]="dt10" [owlDateTime]="dt10"
                  [(ngModel)]="selectedMoments"
                  [selectMode]="'rangeTo'">
+          <div class="bg-red has-error top10" *ngIf="!endDateValid">
+            <span
+              class="error-message">Date fin n'est pas valide, elle doit étre supérieur de 15 minutes au moins</span>
+          </div>
         </div>
+
         <owl-date-time [pickerMode]="'dialog'" #dt10></owl-date-time>
 
       </div>
@@ -52,17 +58,21 @@ import {BsModalRef} from "ngx-bootstrap/modal";
 export class AddResModalContent implements OnInit {
 
   public selectedMoments = [
-    new Date(),
-    new Date()
+    moment().add(moment.duration(1, 'minutes')),
+    moment().add(moment.duration(1, 'hours'))
   ];
-  public min = new Date();
+
+  public minFrom = moment().add(moment.duration(1, 'minutes'));
+  public minTo = this.minFrom.add(moment.duration(15, 'minutes'));
+
+  public endDateValid = true;
+
+
   public onClose: Subject<boolean>;
   public onAdd: Subject<any>;
 
-  constructor(public bsModalRef: BsModalRef,
-              private _reservationService: ReservationsService,
-              private toastr: ToastrService,
-              private spinnerService: Ng4LoadingSpinnerService,) {
+  constructor(public bsModalRef: BsModalRef) {
+
   }
 
   ngOnInit() {
@@ -72,6 +82,13 @@ export class AddResModalContent implements OnInit {
 
 
   AddEvent() {
-    this.onAdd.next(this.selectedMoments);
+    if (moment(this.selectedMoments[0]).add(moment.duration(15, 'minutes')) <= moment(this.selectedMoments[1])) {
+      this.endDateValid = true;
+      this.onAdd.next(this.selectedMoments);
+    }
+    else {
+      this.endDateValid = false;
+    }
+
   }
 }

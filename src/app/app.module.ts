@@ -7,11 +7,10 @@ import {MainModule} from './main/main.module';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {LoginComponent} from "./login/login.component";
 
-import {AuthenticationService} from './login/authentication.service';
 import {GlobalService} from './services/global.service';
 import {Ng4LoadingSpinnerModule} from './services/ng4-loading-spinner';
+import {LoginModule} from "./login/login.module";
 
 
 export function tokenGetter() {
@@ -21,11 +20,11 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
   ],
   imports: [
     BrowserModule,
     MainModule,
+    LoginModule,
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -38,7 +37,7 @@ export function tokenGetter() {
     }),
     Ng4LoadingSpinnerModule.forRoot()
   ],
-  providers: [AuthenticationService, GlobalService],
+  providers: [GlobalService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

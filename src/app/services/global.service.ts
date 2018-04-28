@@ -4,14 +4,13 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 @Injectable()
 export class GlobalService {
   public currentUser: any = {};
-  public serverAddress = "http://localhost:8000/";
+  public serverAddress = "http://127.0.0.1:8000/";
 
   constructor(private jwtHelper: JwtHelperService) {
     if (this.loggedIn()) {
       let token = localStorage.getItem('access_token');
       this.currentUser = this.jwtHelper.decodeToken(token);
     }
-
   }
 
   public loggedIn() {

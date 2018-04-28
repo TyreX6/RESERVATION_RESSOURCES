@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {AuthenticationService} from './authentication.service';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {GlobalService} from "../services/global.service";
-import {Ng4LoadingSpinnerService} from '../services/ng4-loading-spinner';
+import {Ng4LoadingSpinnerService} from "../services/ng4-loading-spinner";
 
 @Component({
   selector: 'app-login',
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
               private spinnerService: Ng4LoadingSpinnerService) {
 
     if (_globalService.loggedIn()) {
-      this.router.navigate(['/reservation/add']);
+      this.router.navigate(['/logged/reservation/add']);
     }
     this.loginForm = formBuilder.group({
       'username': ['', Validators.required],

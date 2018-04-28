@@ -17,11 +17,15 @@ import * as moment from 'moment';
 import {GlobalService} from "../../../services/global.service";
 import {Subject} from 'rxjs/Subject';
 import {AddResModalContent} from "./AddResModalContent";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-add-reservation',
   templateUrl: './add-reservation.component.html',
   styleUrls: ['./add-reservation.component.css'],
+  styles: [`:host >>> .select2-container {
+    min-width: 100%;
+  }`]
 })
 export class AddReservationComponent implements OnInit, AfterViewChecked {
   closeResult: string;
@@ -99,7 +103,7 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
    * @param e
    */
   public changed(e: any): void {
-    this.spinnerService.show();
+
 
     this.deviceSelected = e;
     this.refreshCalendar(e.value);
@@ -165,20 +169,24 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
     };
     const initialState = {id: model.event.id, ucCalendar: this.ucCalendar};
 
-
+    /**
+     * If the reservation is editable
+     */
     if (model.event.user == this.user.id && new Date(model.event.start) > new Date()) {
+
+      // Show Model
       this.bsModalRef = this.modalService.show(ModalContentComponent, {initialState});
       this.bsModalRef.content.id = model.event.id_res;
-      this.bsModalRef.content.selectedMoments = [new Date(model.event.start), new Date(model.event.end)];
+      this.bsModalRef.content.selectedMoments = [model.event.start, model.event.end];
 
       this.bsModalRef.content.onClose.subscribe(result => {
         this.ucCalendar.fullCalendar("removeEvents", [model.event.id]);
         this.events = this.events.filter(function (returnableObjects) {
           return returnableObjects.id !== model.event.id;
         });
+
         this.refreshCalendar(this.deviceSelected.value);
 
-        console.log('after remove', this.events);
         //this.events[model.event.id]={};
       });
 
@@ -223,77 +231,59 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
 
 
   jqueryCall() {
-    //   $('#date-end').bootstrapMaterialDatePicker({ weekStart : 0 });
-    //   $('#date-start').bootstrapMaterialDatePicker({ weekStart : 0 }).on('change', function(e, date){
-    //   $('#date-end').bootstrapMaterialDatePicker('setMinDate', date);
-    // });
-    /* initialize the external events
-     -----------------------------------------------------------------*/
-    // $('.fc-event').each(function () {
-    //   // make the event draggable using jQuery UI
-    //   $(this).data('event', {
-    //     title: $.trim($(this).text()), // use the element's text as the event title
-    //     stick: true // maintain when user navigates (see docs on the renderEvent method)
-    //   });
-    //   $(this).draggable({
-    //     zIndex: 999,
-    //     revert: true, // will cause the event to go back to its
-    //     revertDuration: 0 //  original position after the drag
-    //   });
-    // });
-
   }
 
 
-  showTime() {
-    let model = {
-      id: this.events.length,
-      id_res: null,
-      user: this.user.id,
-      title: this.deviceSelected.model + " pour " + this.user.username,
-      start: moment(this.selectedMoments[0]),
-      end: moment(this.selectedMoments[1]),
-      editable: true
-    };
-    this._calendarService.calendarClick(this.user, model, this.ucCalendar, this.deviceSelected, this.events);
-    console.log(moment(this.selectedMoments[0]));
-  }
-
-  refreshCalendar(id: number) {
+  public refreshCalendar(id: number) {
+    this.spinnerService.show();
     this._reservationService.GetReservationsList(id).subscribe((result) => {
-      this.events = [];
+        this.events = [];
 
-      result.forEach((element) => {
-        this.events.push(
-          {
-            id: this.events.length,
-            id_res: element.id,
-            user: element.user.id,
-            title: "Réservé pour " + element.user.username,
-            start: moment(element.date_debut),
-            end: moment(element.date_fin),
-            resource: element.ressource.id,
-            className: element.user.id == this.userID ? ["bg-success"] : ["bg-red"],
-            editable: element.user.id === this.userID && Date.parse(element.date_fin) > Date.now()
-          });
-      });
-      console.log("initial", this.events);
+        result.forEach((element) => {
+          this.events.push(
+            {
+              id: this.events.length,
+              id_res: element.id,
+              user: element.user.id,
+              title: "Réservé pour " + element.user.username,
+              start: moment(element.date_debut),
+              end: moment(element.date_fin),
+              resource: element.ressource.id,
+              className: element.user.id == this.userID && moment(element.date_fin) > moment() ? ["bg-dark-green"] : ["bg-grey"],
+              editable: element.user.id === this.userID && Date.parse(element.date_fin) > Date.now()
+            });
+        });
+        console.log("initial", this.events);
+        this.spinnerService.hide();
+      },
+      (err: HttpErrorResponse) => {
+        console.log("Error occured.", err);
+        this.toastr.error("Erreur coté serveur", "Erreur 500");
+        this.spinnerService.hide();
+      }
+    );
 
-      this.spinnerService.hide();
-
-    });
   }
 
   openModal() {
     const initialState = {ucCalendar: this.ucCalendar};
     this.bsModalRef = this.modalService.show(AddResModalContent, {initialState});
+
     this.bsModalRef.content.onAdd.subscribe(result => {
       this.spinnerService.show();
       let detail: any = {start: moment(result[0]), end: moment(result[1])};
-      this._calendarService.calendarClick(this.user, detail, this.ucCalendar, this.deviceSelected, this.events);
+
+      if (!this._calendarService.verifyCrossReservation(this.events, detail.start, detail.end)) {
+
+        this._calendarService.calendarClick(this.user, detail, this.ucCalendar, this.deviceSelected, this.events);
+        this.bsModalRef.hide();
+      } else {
+        this.toastr.error("Il existe une autre réservation", "Erreur");
+      }
       this.spinnerService.hide();
-      this.bsModalRef.hide();
+
     });
+
   }
 
 }
@@ -315,7 +305,7 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
           Date debut réservation:
         </label>
         <div class="col-md-6">
-          <input [min]="min" [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11"
+          <input [min]="minFrom" [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11"
                  [(ngModel)]="selectedMoments"
                  [selectMode]="'rangeFrom'">
         </div>
@@ -327,9 +317,13 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
           Date fin réservation:
         </label>
         <div class="col-md-6">
-          <input [min]="min" [owlDateTimeTrigger]="dt10" [owlDateTime]="dt10"
+          <input [min]="minTo" [owlDateTimeTrigger]="dt10" [owlDateTime]="dt10"
                  [(ngModel)]="selectedMoments"
                  [selectMode]="'rangeTo'">
+          <div class="bg-red has-error top10" *ngIf="!endDateValid">
+            <span
+              class="error-message">Date fin n'est pas valide, elle doit étre supérieur de 15 minutes au moins</span>
+          </div>
         </div>
         <owl-date-time [pickerMode]="'dialog'" #dt10></owl-date-time>
 
@@ -348,7 +342,11 @@ export class ModalContentComponent implements OnInit {
   id: number;
   events: any[];
   public selectedMoments = [];
-  public min = new Date();
+
+  public minFrom = moment();
+  public minTo = this.minFrom.add(moment.duration(15, 'minutes'));
+  public endDateValid = true;
+
   public onClose: Subject<boolean>;
   public onUpdate: Subject<any>;
 
@@ -385,7 +383,14 @@ export class ModalContentComponent implements OnInit {
   }
 
   UpdateEvent() {
-    this.onUpdate.next(this.selectedMoments);
+    if (moment(this.selectedMoments[0]).add(moment.duration(15, 'minutes')) <= moment(this.selectedMoments[1])) {
+      this.endDateValid = true;
+      this.onUpdate.next(this.selectedMoments);
+    }
+    else {
+      this.endDateValid = false;
+    }
+
   }
 }
 

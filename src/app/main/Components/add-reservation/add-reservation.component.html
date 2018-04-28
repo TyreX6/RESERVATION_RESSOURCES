@@ -22,35 +22,26 @@
                       <div class="row">
                         <div class="col-md-4">
                           <h4>Catégories</h4>
-                          <select2 class="select2-active" [cssImport]=true [data]="categoriesData" [width]="300"
+                          <select2 class="select2-active" [cssImport]=true [data]="categoriesData"
                                    (valueChanged)="categoryChanged($event)"></select2>
                         </div>
                         <div class="col-md-4">
                           <h4>Ressources</h4>
-                          <select2 [cssImport]=true [data]="resourcesData" [width]="300"
+                          <select2 [cssImport]=true [data]="resourcesData"
                                    (valueChanged)="changed($event)" [value]="startValue"></select2>
                         </div>
 
-                        <div class="col-md-4">
-                          <div class="button-demo js-modal-buttons">
-                            <button (click)="openModal()" type="button" class="btn bg-teal top20 right" data-color="teal"><i
-                              class="fa fa-plus"></i></button>
-                          </div>
+                        <div class="col-md-2 col-xs-12 right">
+                          <button (click)="openModal()" type="button" class="btn bg-teal top25 right full-width"
+                                  data-color="teal"><i
+                            class="fa fa-plus"></i></button>
                         </div>
 
-
+                        <div class="col-md-2 col-xs-12 right">
+                          <button type="button" (click)="refreshCalendar(deviceSelected.value)" class="btn btn-secondary top25 right full-width"><i
+                            class="fa fa-refresh"></i> Actualiser</button>
+                        </div>
                       </div>
-                      <!--<div id="external-events">-->
-                      <!--<div class='fc-event'>My Event 1</div>-->
-                      <!--<div class='fc-event'>My Event 2</div>-->
-                      <!--<div class='fc-event'>My Event 3</div>-->
-                      <!--<div class='fc-event'>My Event 4</div>-->
-                      <!--<div class='fc-event'>My Event 5</div>-->
-                      <!--<p>-->
-                      <!--<input type='checkbox' id='drop-remove' />-->
-                      <!--<label for='drop-remove'>remove after drop</label>-->
-                      <!--</p>-->
-                      <!--</div>-->
                     </div>
                   </div>
                 </div>
@@ -97,7 +88,7 @@
               <li><a title="" href="#">Recherche</a></li>
             </ul>
           </div>
-          <div><strong>Gestion de réservation des ressources</strong> </div>
+          <div><strong>Gestion de réservation des ressources</strong></div>
         </div>
       </div>
     </div>

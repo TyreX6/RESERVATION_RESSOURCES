@@ -42,7 +42,12 @@
                 <span>Tous</span>
               </a>
             </li>
-            <li *ngFor="let categ of categories" [routerLink]="['resources/list/',categ.id]">
+            <li [routerLink]="['resources/list',1]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+              <a >
+                <span>Smartphones IOS</span>
+              </a>
+            </li>
+            <li *ngFor="let categ of categories" [routerLink]="['resources/list/',categ.id]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
               <a >
                 <span>{{categ.name}}</span>
               </a>

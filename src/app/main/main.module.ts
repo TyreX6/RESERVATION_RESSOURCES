@@ -24,12 +24,14 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FullCalendarModule} from 'ng-fullcalendar';
 import {KeysPipePipe} from './Components/list-resources/keys-pipe.pipe';
 
-import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
+import {OwlDateTimeModule, OWL_DATE_TIME_LOCALE} from 'ng-pick-datetime';
+import {OwlMomentDateTimeModule} from 'ng-pick-datetime-moment';
 
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {AddResModalContent} from "./Components/add-reservation/AddResModalContent";
+
 
 @NgModule({
   imports: [
@@ -48,7 +50,7 @@ import {AddResModalContent} from "./Components/add-reservation/AddResModalConten
     Select2Module,
     FullCalendarModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule,
+    OwlMomentDateTimeModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot()
@@ -65,8 +67,16 @@ import {AddResModalContent} from "./Components/add-reservation/AddResModalConten
     AddResModalContent,
     KeysPipePipe,
   ],
-  entryComponents: [ModalContentComponent,AddResModalContent],
-  providers: [AuthGuard, CategoriesService, ReservationsService, ResourcesService, CalendarInitService, VerificationService],
+  entryComponents: [ModalContentComponent, AddResModalContent],
+  providers: [
+    AuthGuard,
+    CategoriesService,
+    ReservationsService,
+    ResourcesService,
+    CalendarInitService,
+    VerificationService,
+    {provide: OWL_DATE_TIME_LOCALE, useValue: 'fr'}
+  ],
 })
 export class MainModule {
 }

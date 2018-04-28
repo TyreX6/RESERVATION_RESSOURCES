@@ -1,15 +1,13 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
-import {AuthenticationService} from '../../login/authentication.service';
 import {JwtHelperService} from '@auth0/angular-jwt';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private authentication: AuthenticationService,
-              private router: Router,
-              public jwtHelper: JwtHelperService)
-  {}
+  constructor(private router: Router,
+              public jwtHelper: JwtHelperService) {
+  }
 
   canActivate() {
     if (!this.jwtHelper.isTokenExpired()) {

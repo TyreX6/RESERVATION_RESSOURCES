@@ -3,7 +3,6 @@ import {Routes, RouterModule} from '@angular/router';
 import {LoginComponent} from "./login/login.component";
 
 const appRoutes: Routes = [
-
   {
     path: 'logged',
     loadChildren: './main/main.module#MainModule',

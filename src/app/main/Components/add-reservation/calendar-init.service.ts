@@ -11,6 +11,7 @@ import {CalendarComponent} from "ng-fullcalendar";
 import {ToastrService} from 'ngx-toastr';
 import {VerificationService} from "../../services/verification.service";
 import {Subject} from "rxjs/Subject";
+import {HttpErrorResponse} from "@angular/common/http";
 
 
 @Injectable()
@@ -30,14 +31,15 @@ export class CalendarInitService {
     return {
       editable: true,
       eventLimit: false,
+      //height:'parent',
       slotDuration: moment.duration(15, 'minutes'),
-      minTime: moment.duration(9, 'hours'),
-      maxTime: moment.duration(18, 'hours'),
+      minTime: moment.duration(8.5, 'hours'),
+      maxTime: moment.duration(18.5, 'hours'),
       slotEventOverlap: false,
       eventOverlap: false,
       selectOverlap: false,
       weekends: false,
-      allDaySlot: true,
+      allDaySlot: false,
       droppable: true, // this allows things to be dropped onto the calendar !!!
       dropAccept: '.fc-event',
       selectable: true,
@@ -48,7 +50,9 @@ export class CalendarInitService {
         day: 'Jour',
         list: 'Liste'
       },
+      slotLabelFormat: 'H(:mm)',
       defaultView: 'agendaWeek',
+      locale: 'fr',
       dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
       header: {
         left: 'prev,next today',
@@ -64,7 +68,7 @@ export class CalendarInitService {
   public calendarClick(currentUser: any, detail: any, ucCalendar: CalendarComponent, deviceSelected: any, events: any[]) {
 
     if (new Date(detail.start.format()) < new Date()) {
-      alert("Vous ne pouvez pas réserver dans le passé !");
+      this.toastr.error("Vous ne pouvez pas réserver dans le passé", "Erreur");
       ucCalendar.fullCalendar('unselect');
       return false;
     }
@@ -83,31 +87,12 @@ export class CalendarInitService {
         editable: true
       }
     };
-    console.log("events before render", events);
 
     ucCalendar.fullCalendar('renderEvent', model.event);
     ucCalendar.fullCalendar('unselect');
-    this.allo();
-    // if (this._verificationService.verifyDuration(model.event) > (this.rules.lim_duree_reservation*3600)){
-    //   this.toastr.error("Vous avez dépassé la limite du durée", "Erreur");
-    //   ucCalendar.fullCalendar('removeEvents', [model.event.id]);
-    //   return ;
-    // }
-    //
-    // if (this._verificationService.verifyDayMaxReservaitons(model.event,events) > this.rules.nbr_limite_par_jour){
-    //   this.toastr.error("Vous avez dépassé le nbr maximale de réservation par jour", "Erreur");
-    //   ucCalendar.fullCalendar('removeEvents', [model.event.id]);
-    //   return;
-    // }
-    //
-    // if (this._verificationService.verifyWeekMaxReservations(model.event,events) > this.rules.nbr_limite_par_semaine) {
-    //   this.toastr.error("Vous avez dépassé le nbr maximale de réservation par semaine", "Erreur");
-    //   ucCalendar.fullCalendar('removeEvents', [model.event.id]);
-    //   return;
-    // }
+    this.blink();
 
 
-    console.log("events before adding", events);
     this._reservationService.AddReservation(model.event).subscribe((result) => {
       if (result.success == 1) {
 
@@ -115,19 +100,22 @@ export class CalendarInitService {
         model.event.id_res = result.reservation_id;
         ucCalendar.fullCalendar('removeEvents', [model.event.id]);
         ucCalendar.fullCalendar('renderEvent', model.event);
-        // this.ucCalendar.fullCalendar('updateEvent',item);
-        clearInterval(this.allo());
+        clearInterval(this.blink());
         events.push(model.event);
         this.toastr.success(result.message, "Succée");
-        console.log("events after adding", events);
       }
 
       else {
         this.toastr.error(result.message, "Erreur");
         ucCalendar.fullCalendar('removeEvents', [model.event.id]);
+        clearInterval(this.blink());
       }
 
-    });
+    },
+      (err: HttpErrorResponse) => {
+        this.toastr.error("Erreur coté serveur","Erreur 500");
+        clearInterval(this.blink());
+      });
   }
 
   //----------------------- End Method -----------------------------//
@@ -135,6 +123,7 @@ export class CalendarInitService {
 
   //--------------------- Service for the reservation update -----------------//
   public updateEvent(model: any, ucCalendar: CalendarComponent, events: any): Observable<any> {
+    console.log("update event");
     let subject = new Subject<any>();
     model = {
       event: {
@@ -156,7 +145,7 @@ export class CalendarInitService {
     // _model.duration = {};
 
     if (new Date(model.event.start.format()) < new Date()) {
-      alert("Vous ne pouvez délpacer cette réservation");
+      this.toastr.error("Vous ne pouvez pas déplacer cette réservation.", "Erreur");
 
       this.revertFunc(model, ucCalendar, events);
       return Observable.of(false);
@@ -177,37 +166,14 @@ export class CalendarInitService {
     console.log(onlyExpandble);
 
     if (onlyExpandble) {
-
-      alert('Vous ne pouvez pas modifier cette réservation');
       this.revertFunc(model, ucCalendar, events);
       this.toastr.error("Cette réservation est déja démarré. Vous pouvez seulement faire une prolongation", "Erreur");
       return Observable.of(false);
     }
+
     else {
-
-      // if (!this._verificationService.verifyDuration(model.event)){
-      //   this.toastr.error("Vous avez dépassé la limite du durée", "Erreur");
-      //   this.revertFunc(model, ucCalendar, events);
-      //   return ;
-      // }
-      //
-      // if (!this._verificationService.verifyDayMaxReservaitons(model.event,events)){
-      //   this.toastr.error("Vous avez dépassé le nbr maximale de réservation par jour", "Erreur");
-      //   this.revertFunc(model, ucCalendar, events);
-      //   return;
-      // }
-      //
-      // if (!this._verificationService.verifyWeekMaxReservations(model.event,events)){
-      //   this.toastr.error("Vous avez dépassé le nbr maximale de réservation par semaine", "Erreur");
-      //   this.revertFunc(model, ucCalendar, events);
-      //   return;
-      // }
-
-      //ucCalendar.fullCalendar('removeEvents', [model.event.id]);
-      console.log("events", events);
-
       events[model.event.id].className = ["bg-orange"];
-      this.allo();
+      this.blink();
 
       this._reservationService.ModifyReservation(model.event).subscribe((result) => {
         if (result.success == 1) {
@@ -220,18 +186,19 @@ export class CalendarInitService {
         }
         else {
           this.toastr.error(result.message, "Erreur");
-
           events[model.event.id].className = "bg-danger";
           model.event.className = "bg-danger";
-
           this.revertFunc(model, ucCalendar, events);
-          // ucCalendar.fullCalendar('removeEvents', [model.event.id]);
-          // ucCalendar.fullCalendar('renderEvent', model.event);
           subject.next(false);
         }
 
-        clearInterval(this.allo());
-      });
+        clearInterval(this.blink());
+      },
+        (err: HttpErrorResponse) => {
+          this.toastr.error("Erreur coté serveur","Erreur 500");
+          subject.next(false);
+          clearInterval(this.blink());
+        });
 
     }
 
@@ -244,6 +211,7 @@ export class CalendarInitService {
   }
 
   resizeEvent(model: any, ucCalendar: CalendarComponent, events: any[]) {
+    console.log("resize event");
     model = {
       event: {
         id: model.event.id,
@@ -260,36 +228,38 @@ export class CalendarInitService {
     };
 
     events[model.event.id].className = "bg-orange";
-    this.allo();
+    this.blink();
 
     this._reservationService.ModifyReservation(model.event).subscribe((result) => {
+
       if (result.success == 1) {
         this.toastr.success(result.message, "Succée");
-        events[model.event.id].className = "bg-success";
+        events[model.event.id].className = "bg-dark-green";
         model.event.className = "bg-success";
         ucCalendar.fullCalendar('removeEvents', [model.event.id]);
         ucCalendar.fullCalendar('renderEvent', model.event);
       }
       else {
         this.toastr.error(result.message, "Erreur");
-
         events[model.event.id].className = "bg-danger";
         model.event.className = "bg-danger";
-
         ucCalendar.fullCalendar("removeEvents", [model.event.id]);
         events[model.event.id].end = moment(model.event.end).subtract(model.duration, 'seconds');
         ucCalendar.fullCalendar("renderEvent", events[model.event.id]);
-
       }
 
-      clearInterval(this.allo());
-    });
+      clearInterval(this.blink());
+    },
+      (err: HttpErrorResponse) => {
+        this.toastr.error("Erreur coté serveur","Erreur 500");
+        clearInterval(this.blink());
+      });
 
     return model;
 
   }
 
-  allo() {
+  blink() {
     return setInterval(function () {
       $(".bg-orange").fadeIn(150).delay(200).fadeOut(150);
     }, 500);
@@ -303,6 +273,24 @@ export class CalendarInitService {
     events[model.event.id].end = moment(model.event.end).subtract(model.duration, 'seconds');
     ucCalendar.fullCalendar("renderEvent", events[model.event.id]);
 
+  }
+
+  /**
+   *
+   * @param {any[]} events
+   * @param start moment
+   * @param end moment
+   */
+  public verifyCrossReservation(events: any[], start, end) {
+    let count: number = 0;
+    events.forEach(element => {
+      if (element.start.isBetween(start, end) || element.end.isBetween(start, end)) {
+        count++;
+        return;
+      }
+    });
+    console.log("count", count);
+    return count > 0;
   }
 
 
