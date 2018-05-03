@@ -4,13 +4,16 @@
     <!-- User Info -->
     <div class="user-info">
       <div class="image">
-        <img src="assets/images/user.png" width="48" height="48" alt="User" />
+        <img src="assets/images/user.png" width="48" height="48" alt="User"/>
       </div>
       <div class="info-container">
-        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.username | uppercase}}</div>
+        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.username |
+          uppercase}}
+        </div>
         <div class="email">{{user.email}}</div>
         <div class="email">
-          {{user.roles[0]}}</div>
+          {{user.roles[0]}}
+        </div>
       </div>
     </div>
     <!-- #User Info -->
@@ -19,7 +22,7 @@
       <ul class="list">
         <!--<li class="header">MAIN NAVIGATION</li>-->
         <li [routerLink]="['reservation/add']" routerLinkActive="active">
-          <a  >
+          <a>
             <i class="material-icons">date_range</i>
             <span>Réserver ressource</span>
           </a>
@@ -38,26 +41,16 @@
           </a>
           <ul class="ml-menu">
             <li [routerLink]="['resources/list']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-              <a >
+              <a>
                 <span>Tous</span>
               </a>
             </li>
-            <li [routerLink]="['resources/list',1]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-              <a >
-                <span>Smartphones IOS</span>
-              </a>
-            </li>
-            <li *ngFor="let categ of categories" [routerLink]="['resources/list/',categ.id]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-              <a >
-                <span>{{categ.name}}</span>
-              </a>
-            </li>
-
+            <ng-template #dynamicComponent></ng-template>
           </ul>
         </li>
 
         <li [routerLink]="['search']" routerLinkActive="active">
-          <a >
+          <a>
             <i class="material-icons">search</i>
             <span>Recherche Ressource</span>
           </a>
@@ -71,6 +64,7 @@
         </li>
 
       </ul>
+
     </div>
     <!-- #Menu -->
     <!-- Footer -->
@@ -79,7 +73,7 @@
         <a href="javascript:void(0);">Réservation des ressources</a>.
       </div>
       <!--<div class="version">-->
-        <!--<b>Version: </b> 1.0.4-->
+      <!--<b>Version: </b> 1.0.4-->
       <!--</div>-->
     </div>
     <!-- #Footer -->
@@ -88,7 +82,7 @@
   <!-- Right Sidebar -->
   <aside id="rightsidebar" class="right-sidebar">
     <ul class="nav nav-tabs tab-nav-right" role="tablist">
-      <li role="presentation" ><a href="#skins" data-toggle="tab">SKINS</a></li>
+      <li role="presentation"><a href="#skins" data-toggle="tab">SKINS</a></li>
     </ul>
     <div class="tab-content">
 

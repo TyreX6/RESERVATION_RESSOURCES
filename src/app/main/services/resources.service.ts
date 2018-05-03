@@ -17,8 +17,15 @@ export class ResourcesService {
     this.token = localStorage.getItem("access_token");
   }
 
-  GetResourcesList(): Observable<any[]> {
+  GetDevicesList(): Observable<any[]> {
     return this.http.get<any[]>(this.serverAddress + 'api/dispositifs/list', {
+      headers: new HttpHeaders().set("Content-Type", "application/json")
+        .set("Authorization", "Bearer " + this.token)
+    });
+  }
+
+  GetResourcesList(): Observable<any[]> {
+    return this.http.get<any[]>(this.serverAddress + 'api/resources/list', {
       headers: new HttpHeaders().set("Content-Type", "application/json")
         .set("Authorization", "Bearer " + this.token)
     });

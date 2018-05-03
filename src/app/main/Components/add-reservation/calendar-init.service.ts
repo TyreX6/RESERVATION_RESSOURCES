@@ -2,28 +2,24 @@ import {Injectable} from '@angular/core';
 import {ReservationsService} from "../../services/reservations.service";
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import {Ng4LoadingSpinnerService} from "../../../services/ng4-loading-spinner";
+import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import * as jquery from 'jquery';
 import 'jqueryui';
 import * as moment from 'moment';
 import 'moment-duration-format';
 import {CalendarComponent} from "ng-fullcalendar";
 import {ToastrService} from 'ngx-toastr';
-import {VerificationService} from "../../services/verification.service";
 import {Subject} from "rxjs/Subject";
 import {HttpErrorResponse} from "@angular/common/http";
 
 
 @Injectable()
 export class CalendarInitService {
-  public reservations: any[] = [];
 
   constructor(private toastr: ToastrService,
               private _reservationService: ReservationsService,
               private spinnerService: Ng4LoadingSpinnerService,
-              private _verificationService: VerificationService) {
-    // this.fetchReservations();
-
+  ) {
   }
 
 
@@ -35,6 +31,7 @@ export class CalendarInitService {
       slotDuration: moment.duration(15, 'minutes'),
       minTime: moment.duration(8.5, 'hours'),
       maxTime: moment.duration(18.5, 'hours'),
+      nowIndicator: true,
       slotEventOverlap: false,
       eventOverlap: false,
       selectOverlap: false,
@@ -79,11 +76,11 @@ export class CalendarInitService {
         id: events.length,
         id_res: null,
         user: currentUser.id,
-        title: deviceSelected.data[0].text + " pour " + currentUser.username,
+        title: "Réservé pour " + currentUser.username,
         start: moment(detail.start),
         end: moment(detail.end),
         className: ["bg-orange"],
-        resource: deviceSelected.data[0].id,
+        resource: deviceSelected.value,
         editable: true
       }
     };
@@ -94,26 +91,26 @@ export class CalendarInitService {
 
 
     this._reservationService.AddReservation(model.event).subscribe((result) => {
-      if (result.success == 1) {
+        if (result.success == 1) {
 
-        model.event.className = ["bg-success"];
-        model.event.id_res = result.reservation_id;
-        ucCalendar.fullCalendar('removeEvents', [model.event.id]);
-        ucCalendar.fullCalendar('renderEvent', model.event);
-        clearInterval(this.blink());
-        events.push(model.event);
-        this.toastr.success(result.message, "Succée");
-      }
+          model.event.className = ["bg-dark-green"];
+          model.event.id_res = result.reservation_id;
+          ucCalendar.fullCalendar('removeEvents', [model.event.id]);
+          ucCalendar.fullCalendar('renderEvent', model.event);
+          clearInterval(this.blink());
+          events.push(model.event);
+          this.toastr.success(result.message, "Succée");
+        }
 
-      else {
-        this.toastr.error(result.message, "Erreur");
-        ucCalendar.fullCalendar('removeEvents', [model.event.id]);
-        clearInterval(this.blink());
-      }
+        else {
+          this.toastr.error(result.message, "Erreur");
+          ucCalendar.fullCalendar('removeEvents', [model.event.id]);
+          clearInterval(this.blink());
+        }
 
-    },
+      },
       (err: HttpErrorResponse) => {
-        this.toastr.error("Erreur coté serveur","Erreur 500");
+        this.toastr.error("Erreur coté serveur", "Erreur 500");
         clearInterval(this.blink());
       });
   }
@@ -122,6 +119,14 @@ export class CalendarInitService {
 
 
   //--------------------- Service for the reservation update -----------------//
+  /**
+   * Event update function
+   *
+   * @param model
+   * @param {CalendarComponent} ucCalendar
+   * @param events
+   * @returns {Observable<any>}
+   */
   public updateEvent(model: any, ucCalendar: CalendarComponent, events: any): Observable<any> {
     console.log("update event");
     let subject = new Subject<any>();
@@ -140,9 +145,6 @@ export class CalendarInitService {
       },
       duration: model.duration
     };
-    console.log("model:", model.event);
-
-    // _model.duration = {};
 
     if (new Date(model.event.start.format()) < new Date()) {
       this.toastr.error("Vous ne pouvez pas déplacer cette réservation.", "Erreur");
@@ -151,21 +153,10 @@ export class CalendarInitService {
       return Observable.of(false);
     }
 
-    // // model.duration = {};
-    // // model.event.start=new Date();
-    // // model.event.end=null;
-    // ucCalendar.fullCalendar('removeEvents', [model.event.id]);
-    // //ucCalendar.fullCalendar('renderEvent', model.event);
-    // return;
-    //
-    //
+    let onlyResize = (new Date(moment(model.event.start).format()) > new Date()) && new Date(moment(model.event.start).subtract(model.duration, 'seconds').format()) < new Date();
 
-    //
-    //
-    let onlyExpandble = (new Date(moment(model.event.start).format()) > new Date()) && new Date(moment(model.event.start).subtract(model.duration, 'seconds').format()) < new Date();
-    console.log(onlyExpandble);
 
-    if (onlyExpandble) {
+    if (onlyResize) {
       this.revertFunc(model, ucCalendar, events);
       this.toastr.error("Cette réservation est déja démarré. Vous pouvez seulement faire une prolongation", "Erreur");
       return Observable.of(false);
@@ -176,40 +167,46 @@ export class CalendarInitService {
       this.blink();
 
       this._reservationService.ModifyReservation(model.event).subscribe((result) => {
-        if (result.success == 1) {
-          this.toastr.success(result.message, "Succée");
-          events[model.event.id].className = "bg-success";
-          model.event.className = "bg-success";
-          ucCalendar.fullCalendar('removeEvents', [model.event.id]);
-          ucCalendar.fullCalendar('renderEvent', model.event);
-          subject.next(true);
-        }
-        else {
-          this.toastr.error(result.message, "Erreur");
-          events[model.event.id].className = "bg-danger";
-          model.event.className = "bg-danger";
-          this.revertFunc(model, ucCalendar, events);
-          subject.next(false);
-        }
+          if (result.success == 1) {
+            this.toastr.success(result.message, "Succée");
+            events[model.event.id].className = "bg-dark-green";
+            model.event.className = "bg-dark-green";
+            ucCalendar.fullCalendar('removeEvents', [model.event.id]);
+            ucCalendar.fullCalendar('renderEvent', model.event);
+            subject.next(true);
+          }
+          else {
+            this.toastr.error(result.message, "Erreur");
+            events[model.event.id].className = "bg-danger";
+            model.event.className = "bg-danger";
+            this.revertFunc(model, ucCalendar, events);
+            subject.next(false);
+          }
 
-        clearInterval(this.blink());
-      },
+          clearInterval(this.blink());
+        },
         (err: HttpErrorResponse) => {
-          this.toastr.error("Erreur coté serveur","Erreur 500");
+          this.toastr.error("Erreur coté serveur", "Erreur 500");
           subject.next(false);
           clearInterval(this.blink());
         });
 
     }
 
-    //
-    //
-    // return model;
-
     return subject.asObservable();
 
   }
 
+  //----------------------------------------------------------//
+
+  /**
+   * Event called when resizing the event
+   * In this function
+   * @param model
+   * @param {CalendarComponent} ucCalendar
+   * @param {any[]} events
+   * @returns {any}
+   */
   resizeEvent(model: any, ucCalendar: CalendarComponent, events: any[]) {
     console.log("resize event");
     model = {
@@ -227,38 +224,49 @@ export class CalendarInitService {
       duration: model.duration
     };
 
+    //------- Loading --------//
     events[model.event.id].className = "bg-orange";
     this.blink();
 
+    //---------- Calling web service to modify the reservation ------------//
     this._reservationService.ModifyReservation(model.event).subscribe((result) => {
 
-      if (result.success == 1) {
-        this.toastr.success(result.message, "Succée");
-        events[model.event.id].className = "bg-dark-green";
-        model.event.className = "bg-success";
-        ucCalendar.fullCalendar('removeEvents', [model.event.id]);
-        ucCalendar.fullCalendar('renderEvent', model.event);
-      }
-      else {
-        this.toastr.error(result.message, "Erreur");
-        events[model.event.id].className = "bg-danger";
-        model.event.className = "bg-danger";
-        ucCalendar.fullCalendar("removeEvents", [model.event.id]);
-        events[model.event.id].end = moment(model.event.end).subtract(model.duration, 'seconds');
-        ucCalendar.fullCalendar("renderEvent", events[model.event.id]);
-      }
+        if (result.success == 1) {
 
-      clearInterval(this.blink());
-    },
+          this.toastr.success(result.message, "Succée");
+          events[model.event.id].className = "bg-dark-green";
+          model.event.className = "bg-dark-green";
+          ucCalendar.fullCalendar('removeEvents', [model.event.id]);
+          ucCalendar.fullCalendar('renderEvent', model.event);
+
+        }
+        else {
+
+          this.toastr.error(result.message, "Erreur");
+          events[model.event.id].className = "bg-danger";
+          model.event.className = "bg-danger";
+          ucCalendar.fullCalendar("removeEvents", [model.event.id]);
+          events[model.event.id].end = moment(model.event.end).subtract(model.duration, 'seconds');
+          ucCalendar.fullCalendar("renderEvent", events[model.event.id]);
+
+        }
+
+        clearInterval(this.blink());
+      },
       (err: HttpErrorResponse) => {
-        this.toastr.error("Erreur coté serveur","Erreur 500");
+        this.toastr.error("Erreur coté serveur", "Erreur 500");
         clearInterval(this.blink());
       });
+    //-------------------------------------------------------//
 
     return model;
 
   }
 
+  /**
+   * Event loading while adding or editing
+   * @returns {NodeJS.Timer}
+   */
   blink() {
     return setInterval(function () {
       $(".bg-orange").fadeIn(150).delay(200).fadeOut(150);
@@ -266,7 +274,14 @@ export class CalendarInitService {
   }
 
 
-  revertFunc(model: any, ucCalendar: CalendarComponent, events: any[]) {
+  /**
+   * This function do return the event in its initial place before drag or modification
+   * This function will be called if with false conditions
+   * @param model
+   * @param {CalendarComponent} ucCalendar
+   * @param {any[]} events
+   */
+  public revertFunc(model: any, ucCalendar: CalendarComponent, events: any[]) {
 
     ucCalendar.fullCalendar("removeEvents", [model.event.id]);
     events[model.event.id].start = moment(model.event.start).subtract(model.duration, 'seconds');
@@ -280,6 +295,8 @@ export class CalendarInitService {
    * @param {any[]} events
    * @param start moment
    * @param end moment
+   * Verify if other reservation in events array exist in the time range
+   * This is front verification
    */
   public verifyCrossReservation(events: any[], start, end) {
     let count: number = 0;
@@ -289,9 +306,8 @@ export class CalendarInitService {
         return;
       }
     });
-    console.log("count", count);
+
     return count > 0;
   }
-
 
 }

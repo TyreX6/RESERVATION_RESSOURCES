@@ -2,6 +2,7 @@ import {Component, OnInit,OnDestroy} from '@angular/core';
 import {GlobalService} from "../services/global.service";
 import {Subscription} from 'rxjs/Subscription';
 import {ToastrService} from 'ngx-toastr';
+import {CategoriesService} from "./services/categories.service";
 
 @Component({
   selector: 'app-logged-pages',
@@ -9,12 +10,14 @@ import {ToastrService} from 'ngx-toastr';
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit,OnDestroy {
+  categs:any[];
   data: any;
   sub: Subscription;
   currentUser:any;
   constructor(
     private _globalService: GlobalService,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private _categoriesService: CategoriesService) {
     this.currentUser = this._globalService.currentUser;
   }
 

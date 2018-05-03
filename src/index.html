@@ -2,15 +2,17 @@
 <html lang="en" class="app">
 
 <head>
-  <meta charset="utf-8">
-  <title>Welcome to project</title>
-  <base href="/">
+  <title>Réservation de ressources</title>
+  <base href="./">
+
+
 
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#29aba4"/>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css" />
   <link href="assets/css/font-awesome.css" rel="stylesheet">
@@ -57,6 +59,9 @@
 <body class="theme-black ls-closed">
 
 <app-root>
+  <nav
+    style="background-color: #29aba4; height: 56px; width: 100%">
+  </nav>
   <div id="nb-global-spinner" class="spinner">
     <div class="blob blob-0"></div>
     <div class="blob blob-1"></div>
@@ -100,6 +105,11 @@
   <!--});-->
   <!--</script>-->
 
+<noscript>
+  <h3 style="color: #673ab7; font-family: Helvetica; margin: 2rem;">
+    Sorry, but app is not available without javascript
+  </h3>
+</noscript>
 
 </body>
 

@@ -1,4 +1,4 @@
-import {Ng4LoadingSpinnerService} from "../../../services/ng4-loading-spinner";
+import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Subject} from "rxjs/Subject";
 import {ToastrService} from "ngx-toastr";
 import {Component, OnInit} from "@angular/core";

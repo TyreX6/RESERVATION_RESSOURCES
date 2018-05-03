@@ -10278,6 +10278,7 @@ fieldset[disabled] .form-control {
   padding-left: 55px;
   padding-top: 7px;
   padding-bottom: 7px;
+  cursor: pointer;
 }
 
 .sidebar .menu .list .ml-menu li.active a.toggled:not(.menu-toggle) {

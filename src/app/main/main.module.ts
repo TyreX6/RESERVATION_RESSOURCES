@@ -31,6 +31,8 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {AddResModalContent} from "./Components/add-reservation/AddResModalContent";
+import {SideMenuDirective} from "./shared/sidebar/side.menu.directive";
+import {DynamicMenuComponent} from "./shared/sidebar/dynamic.menu.component";
 
 
 @NgModule({
@@ -65,9 +67,11 @@ import {AddResModalContent} from "./Components/add-reservation/AddResModalConten
     ListResourcesComponent,
     ModalContentComponent,
     AddResModalContent,
+    DynamicMenuComponent,
     KeysPipePipe,
+    SideMenuDirective
   ],
-  entryComponents: [ModalContentComponent, AddResModalContent],
+  entryComponents: [ModalContentComponent, AddResModalContent,DynamicMenuComponent],
   providers: [
     AuthGuard,
     CategoriesService,

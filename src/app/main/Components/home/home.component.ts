@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterContentInit} from '@angular/core';
-import {Ng4LoadingSpinnerService} from '../../../services/ng4-loading-spinner';
+import {Ng4LoadingSpinnerService} from 'ng4-loading-spinner';
 import {Router} from "@angular/router";
 import {CategoriesService} from '../../services/categories.service';
 

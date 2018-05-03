@@ -8,6 +8,7 @@
             <ol class="breadcrumb">
               <li><a href="#">Accueil</a></li>
               <li class="active"><strong>Ajout de réservation</strong></li>
+              <li *ngIf="deviceID" class="active"><strong>{{deviceID}}</strong></li>
             </ol>
           </div>
         </div>
@@ -20,15 +21,15 @@
                   <div class="demo-container">
                     <div class="widgets-container">
                       <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-4" *ngIf="!deviceID">
                           <h4>Catégories</h4>
                           <select2 class="select2-active" [cssImport]=true [data]="categoriesData"
                                    (valueChanged)="categoryChanged($event)"></select2>
                         </div>
-                        <div class="col-md-4">
+                        <div [ngClass]="{'col-md-4': !deviceID, 'col-md-8': deviceID}">
                           <h4>Ressources</h4>
                           <select2 [cssImport]=true [data]="resourcesData"
-                                   (valueChanged)="changed($event)" [value]="startValue"></select2>
+                                   [value]="startValue" (valueChanged)="changed($event)"></select2>
                         </div>
 
                         <div class="col-md-2 col-xs-12 right">
@@ -38,8 +39,10 @@
                         </div>
 
                         <div class="col-md-2 col-xs-12 right">
-                          <button type="button" (click)="refreshCalendar(deviceSelected.value)" class="btn btn-secondary top25 right full-width"><i
-                            class="fa fa-refresh"></i> Actualiser</button>
+                          <button type="button" (click)="refreshCalendar(deviceSelected.value)"
+                                  class="btn btn-secondary top25 right full-width"><i
+                            class="fa fa-refresh"></i> Actualiser
+                          </button>
                         </div>
                       </div>
                     </div>

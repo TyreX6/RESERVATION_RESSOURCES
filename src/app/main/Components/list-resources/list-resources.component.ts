@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterViewInit, AfterViewChecked} from '@angular/core';
-import {Ng4LoadingSpinnerService} from '../../../services/ng4-loading-spinner';
+import {Ng4LoadingSpinnerService} from 'ng4-loading-spinner';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ResourcesService} from "../../services/resources.service";
 import {CategoriesService} from "../../services/categories.service";
@@ -25,6 +25,7 @@ export class ListResourcesComponent implements OnInit, AfterViewChecked {
     this.router.paramMap.subscribe(params => {
       console.log(params);
       this.categID = parseInt(params.get('category'));
+      this.fetchResources();
     });
     this.fetchResources();
 

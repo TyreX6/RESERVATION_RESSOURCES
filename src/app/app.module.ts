@@ -9,13 +9,13 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 
 import {GlobalService} from './services/global.service';
-import {Ng4LoadingSpinnerModule} from './services/ng4-loading-spinner';
+import {Ng4LoadingSpinnerModule} from 'ng4-loading-spinner';
 import {LoginModule} from "./login/login.module";
-
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
+
 
 @NgModule({
   declarations: [
