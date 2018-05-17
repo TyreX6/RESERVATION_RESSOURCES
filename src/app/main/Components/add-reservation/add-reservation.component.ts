@@ -4,8 +4,8 @@ import {Options} from 'fullcalendar';
 import {ToastrService} from 'ngx-toastr';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 
-import * as $ from 'jquery';
-
+// import * as $ from 'jquery';
+declare var $;
 import 'jqueryui';
 import {CalendarInitService} from "./calendar-init.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
@@ -36,7 +36,7 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
   private categories: any[];
   events = [];
   public categoriesData: Array<Select2OptionData>;
-  public resourcesData: Array<Select2OptionData>;
+  public resourcesData: Array<Select2OptionData> = [];
   public startValue: string;
   public deviceSelected: any;
   calendarOptions: Options;
@@ -92,6 +92,7 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     //Initiate the calendar options
     this.calendarOptions = this._calendarService.calendar_options(this.events);
+    $('#modal-request-details').modal('show');
   }
 
   ngAfterViewChecked() {

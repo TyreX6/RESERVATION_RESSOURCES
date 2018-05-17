@@ -1,6 +1,5 @@
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Subject} from "rxjs/Subject";
-import {ToastrService} from "ngx-toastr";
 import {Component, OnInit} from "@angular/core";
 import {ReservationsService} from "../../services/reservations.service";
 import {BsModalRef} from "ngx-bootstrap/modal";

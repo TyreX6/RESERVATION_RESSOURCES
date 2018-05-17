@@ -9027,7 +9027,7 @@ fieldset[disabled] .form-control {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   border: none;
   position: fixed;
-  top: -25px;
+  /*top: -25px;*/
   left: 0;
   z-index: 12;
   width: 100%;

@@ -1,0 +1,20 @@
+<div class="modal fade" [id]="'modal-'+id" role="dialog" [ngClass]="type">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header text-center" [ngClass]="type">
+        <h4 class="modal-title text-center w-100 fz-30">{{title}}</h4>
+      </div>
+      <div class="modal-body text-center">
+        <ng-content></ng-content>
+      </div>
+      <!--<div class="modal-footer text-center mb-3">-->
+        <!--<button type="button" class="btn " (click)="onClose()" *ngIf="type === 'info'">Fermer</button>-->
+        <!--<button type="button" class="btn bg-danger " (click)="onCancel()"-->
+                <!--*ngIf="type === 'confirm' || type === 'error'">Annuler-->
+        <!--</button>-->
+        <!--<button type="button" class="btn " (click)="onConfirm()" *ngIf="type === 'confirm'">Confirmer</button>-->
+        <!--<button type="button" class="btn bg-pending" (click)="onRetry()" *ngIf="type === 'error'">Réessayer</button>-->
+      <!--</div>-->
+    </div>
+  </div>
+</div>
