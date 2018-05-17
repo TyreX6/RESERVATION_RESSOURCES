@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   @ViewChild('dynamicComponent', { read: ViewContainerRef }) myRef;
 
   constructor(private router: Router,
-              private _globalService: GlobalService,
+              public _globalService: GlobalService,
               private _categoriesService: CategoriesService,
               private componentFactoryResolver: ComponentFactoryResolver) {
 

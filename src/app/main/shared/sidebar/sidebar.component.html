@@ -7,7 +7,7 @@
         <img src="assets/images/user.png" width="48" height="48" alt="User"/>
       </div>
       <div class="info-container">
-        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.username |
+        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{_globalService.currentUser.username |
           uppercase}}
         </div>
         <div class="email">{{user.email}}</div>
