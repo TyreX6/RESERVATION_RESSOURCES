@@ -1,21 +1,17 @@
-import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Subject} from "rxjs/Subject";
-import {ToastrService} from "ngx-toastr";
 import {Component, OnInit} from "@angular/core";
-import {ReservationsService} from "../../services/reservations.service";
 import {BsModalRef} from "ngx-bootstrap/modal";
 import * as moment from 'moment';
 
 @Component({
   selector: 'add-modal-content',
   template: `
-    <div class="modal-header">
+    <div class="modal-header bg-green-blue">
       <h4 class="modal-title pull-left">Ajouter réservation</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <hr>
     <div class="modal-body">
       <div class="row">
         <label class="col-md-6">
@@ -46,13 +42,17 @@ import * as moment from 'moment';
         <owl-date-time [pickerMode]="'dialog'" #dt10></owl-date-time>
 
       </div>
+      <hr>
+      <div class="row top20 ">
+        <button type="button" class="btn btn-success" (click)="AddEvent()">Ajouter</button>
+        <button type="button" class="btn btn-outline-danger right" (click)="bsModalRef.hide()">Fermer</button>
+      </div>
 
     </div>
-    <hr>
-    <div class="modal-footer">
-      <button type="button" class="btn bg-green" (click)="AddEvent()">Ajouter</button>
-      <button type="button" class="btn bg-light" (click)="bsModalRef.hide()">Fermer</button>
-    </div>
+
+    <!--<div class="modal-footer">-->
+    <!---->
+    <!--</div>-->
   `
 })
 export class AddResModalContent implements OnInit {

@@ -1,0 +1,67 @@
+<div class="page-sidebar-wrapper">
+  <div class="page-sidebar">
+    <ul class="page-sidebar-menu  page-header-fixed ">
+      <li class="sidebar-search-wrapper">
+        <!-- START RESPONSIVE SEARCH FORM -->
+        <form class="sidebar-search  " action="search_results.html" method="POST">
+          <a href="javascript:;" class="remove"> <i class="icon-close"></i> </a>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search...">
+            <span class="input-group-btn"> <a href="javascript:;" class="btn submit"> <i
+              class="icon-magnifier"></i> </a> </span></div>
+        </form>
+        <!-- END RESPONSIVE SEARCH FORM -->
+      </li>
+      <li class="nav-item active" routerLinkActive="active">
+        <a [routerLink]="['reservation/add']" class="nav-link nav-toggle">
+          <i class="icon-calendar"></i>
+          <span class="title">Réserver ressource</span>
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['profile']">
+          <i class="fa fa-user"></i>
+          <span class="title">Profile</span>
+        </a>
+      </li>
+
+      <li class="nav-item"><a class="nav-link nav-toggle" href="javascript:;">
+        <i class="fa fa-list"></i>
+        <span class="title">Liste des ressources</span>
+        <span class="arrow"></span>
+      </a>
+        <ul class="sub-menu">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['resources/list']" routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}">
+              <span class="title">Tous</span>
+            </a>
+          </li>
+
+          <li class="nav-item" *ngFor="let categ of categories"  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link" [routerLink]="['resources/list/',categ.id]" routerLinkActive="active">
+              <span class="title">{{categ.name}}</span>
+            </a>
+          </li>
+
+        </ul>
+      </li>
+      <li class="nav-item" [routerLink]="['search']" routerLinkActive="active">
+        <a class="nav-link nav-toggle" href="javascript:;">
+          <i class="fa fa-search"></i>
+          <span class="title">Recherche Ressource</span>
+        </a>
+      </li>
+      <li class="heading">
+        <h3 class="uppercase">Logout</h3>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link nav-toggle" href="javascript:;" (click)="logout()">
+          <i class="fa fa-sign-out"></i>
+        <span class="title">Déconnexion</span>
+      </a>
+      </li>
+    </ul>
+  </div>
+</div>

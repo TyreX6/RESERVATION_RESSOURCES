@@ -1,0 +1,19 @@
+.stepBarClass {
+  height:10px;
+  background:lightgray;
+  border-radius:5px;
+}
+
+.stepSliderClass
+{
+  width:20px;
+  height:20px;
+  background:lightgray;
+  border-radius:50%;
+  border:1px solid royalblue;
+  bottom:-50% !important;
+}
+.stepHeilightClass{
+  background:royalblue;
+}
+

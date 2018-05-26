@@ -15,15 +15,7 @@
   min-width: 100%;
   max-width: 100%;
 }
-.bg-orange{
-  background-color: #ad4345;
-}
-.bg-success{
-  background-color: #469348!important;
-}
-.modal{
-  z-index: 1050;
-}
+
 input{
   color:#777 !important;
 }
@@ -38,3 +30,4 @@ input{
 .light-blue-backdrop {
   background-color: #5cb3fd;
 }
+

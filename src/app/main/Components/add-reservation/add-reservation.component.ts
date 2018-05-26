@@ -3,14 +3,11 @@ import {CalendarComponent} from 'ng-fullcalendar';
 import {Options} from 'fullcalendar';
 import {ToastrService} from 'ngx-toastr';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
-
 import * as $ from 'jquery';
-
 import 'jqueryui';
 import {CalendarInitService} from "./calendar-init.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {ActivatedRoute} from '@angular/router';
-import {Select2OptionData} from 'ng2-select2';
 import {ResourcesService} from "../../services/resources.service";
 import {ReservationsService} from "../../services/reservations.service";
 import * as moment from 'moment';
@@ -18,6 +15,9 @@ import {GlobalService} from "../../../services/global.service";
 import {Subject} from 'rxjs/Subject';
 import {AddResModalContent} from "./AddResModalContent";
 import {HttpErrorResponse} from "@angular/common/http";
+import {Observable} from "rxjs/Observable";
+import {of} from "rxjs/observable/of";
+import {isUndefined} from "util";
 
 @Component({
   selector: 'app-add-reservation',
@@ -35,10 +35,11 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
   private user: any;
   private categories: any[];
   events = [];
-  public categoriesData: Array<Select2OptionData>;
-  public resourcesData: Array<Select2OptionData>;
+  public categoriesData$: Observable<any[]>;
+  public resourcesData$: Observable<any[]>;
   public startValue: string;
   public deviceSelected: any;
+  public categorySelected: any;
   calendarOptions: Options;
 
   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
@@ -68,26 +69,22 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
           let data: any[] = result.filter((element) => {
             return element.id == this.deviceID;
           });
-          this.resourcesData = this.getChangeList(data);
+          this.resourcesData$ = this.getChangeList(data,2);
         });
 
       }
       else {
         this._resourcesService.GetCategorizedResourcesList().subscribe((result) => {
           this.categories = result;
-          this.categoriesData = this.getChangeList(result);
+          this.categoriesData$ = this.getChangeList(result,1);
 
         }, (err) => {
           console.log(err);
         });
       }
-
-
     });
 
-
   }
-
 
   ngOnInit() {
     //Initiate the calendar options
@@ -100,13 +97,13 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
 
   //On category list change
   public categoryChanged(e: any): void {
-
+    console.log("e", e);
     let list: any;
     list = this.categories.find(function (element) {
-      return element.id == e.value;
+      return element.id == e.id;
     });
 
-    this.resourcesData = this.getChangeList(list.ressource);
+    this.resourcesData$ = this.getChangeList(list.ressource, 2);
   }
 
 
@@ -115,25 +112,35 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
    * @param e
    */
   public changed(e: any): void {
-    this.deviceSelected = e;
-    this.refreshCalendar(e.value);
+    this.refreshCalendar(this.deviceSelected);
   }
 
 
   /**
    * On category list change
    * @param {any[]} categories
-   * @returns {Select2OptionData[]}
+   * @param type
    */
-  public getChangeList(categories: any[]): Select2OptionData[] {
+  public getChangeList(categories: any[], type?: number): Observable<any[]> {
     let list: any[] = [];
     categories.forEach(function (element) {
       list.push({
-          id: element.id,
-          text: element.name ? element.name : element.model,
-        });
+        id: element.id,
+        name: element.name ? element.name : element.model,
+      });
     });
-    return list;
+
+    //Set the first element selected
+    if (type === 2) {
+      this.deviceSelected = list[0].id;
+      this.refreshCalendar(parseInt(this.deviceSelected));
+    }
+    else {
+      this.categorySelected = list[0].id;
+      this.categoryChanged(list[0]);
+    }
+
+    return of(list);
   }
 
 
@@ -144,7 +151,12 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
    * @param detail
    */
   calendarClick(detail: any) {
-    this._calendarService.calendarClick(this.user, detail, this.ucCalendar, this.deviceSelected, this.events);
+    if (isUndefined(this.deviceSelected)) {
+      this.toastr.error("Séléctioner une ressource !", "Aucune ressource séléctionnée");
+    }
+    else {
+      this._calendarService.calendarClick(this.user, detail, this.ucCalendar, this.deviceSelected, this.events);
+    }
   }
 
   render(model: any) {
@@ -192,7 +204,7 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
         // this.events = this.events.filter(function (returnableObjects) {
         //   return returnableObjects.id !== model.event.id;
         // });
-        this.refreshCalendar(this.deviceSelected.value);
+        this.refreshCalendar(this.deviceSelected);
 
       });
 
@@ -295,13 +307,12 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
 @Component({
   selector: 'modal-content',
   template: `
-    <div class="modal-header">
+    <div class="modal-header bg-primary">
       <h4 class="modal-title pull-left">Modifier réservation</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <hr>
     <div class="modal-body">
       <div class="row">
         <label class="col-md-6">
@@ -331,14 +342,14 @@ export class AddReservationComponent implements OnInit, AfterViewChecked {
         <owl-date-time [pickerMode]="'dialog'" #dt10></owl-date-time>
 
       </div>
-
+      <hr>
+      <div class="row top30">
+        <button type="button" class="btn btn-success" (click)="UpdateEvent()">Modifier</button>
+        <button type="button" class="btn btn-danger" (click)="deleteEvent()">Supprimer</button>
+        <button type="button" class="btn btn-info right" (click)="bsModalRef.hide()">Fermer</button>
+      </div>
     </div>
-    <hr>
-    <div class="modal-footer">
-      <button type="button" class="btn bg-green" (click)="UpdateEvent()">Modifier</button>
-      <button type="button" class="btn bg-red" (click)="deleteEvent()">Supprimer</button>
-      <button type="button" class="btn bg-light" (click)="bsModalRef.hide()">Fermer</button>
-    </div>
+    
   `
 })
 export class ModalContentComponent implements OnInit {

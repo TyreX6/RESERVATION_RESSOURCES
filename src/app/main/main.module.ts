@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
-import {SharedModule} from "./shared/shared.module";
 import {HomeComponent} from './Components/home/home.component';
 import {AuthGuard} from "./_guard";
 import {MainRoutingModule} from "./main-routing.module";
@@ -19,7 +18,7 @@ import {CalendarInitService} from "./Components/add-reservation/calendar-init.se
 import {ReservationsService} from "./services/reservations.service";
 import {VerificationService} from "./services/verification.service";
 
-import {Select2Module} from 'ng2-select2';
+import { NgSelectModule } from '@ng-select/ng-select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FullCalendarModule} from 'ng-fullcalendar';
 import {KeysPipePipe} from './Components/list-resources/keys-pipe.pipe';
@@ -31,8 +30,11 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {AddResModalContent} from "./Components/add-reservation/AddResModalContent";
-import {SideMenuDirective} from "./shared/sidebar/side.menu.directive";
-import {DynamicMenuComponent} from "./shared/sidebar/dynamic.menu.component";
+
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+import {LayoutModule} from "./layout/layout.module";
+import { RangeSliderModule  } from 'ngx-rangeslider-component';
 
 
 @NgModule({
@@ -45,17 +47,20 @@ import {DynamicMenuComponent} from "./shared/sidebar/dynamic.menu.component";
       progressBar: true,
       preventDuplicates: false,
     }), // ToastrModule added
-    SharedModule,
+    // SharedModule,
+    LayoutModule,
     FormsModule,
     MainRoutingModule,
     HttpClientModule,
-    Select2Module,
+    NgSelectModule,
     FullCalendarModule,
     OwlDateTimeModule,
     OwlMomentDateTimeModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    NgxDatatableModule,
+    RangeSliderModule
   ],
   exports: [BsDropdownModule, TooltipModule, ModalModule],
   declarations: [
@@ -67,11 +72,9 @@ import {DynamicMenuComponent} from "./shared/sidebar/dynamic.menu.component";
     ListResourcesComponent,
     ModalContentComponent,
     AddResModalContent,
-    DynamicMenuComponent,
     KeysPipePipe,
-    SideMenuDirective
   ],
-  entryComponents: [ModalContentComponent, AddResModalContent,DynamicMenuComponent],
+  entryComponents: [ModalContentComponent,AddResModalContent],
   providers: [
     AuthGuard,
     CategoriesService,

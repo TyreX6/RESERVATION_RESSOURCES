@@ -11,12 +11,12 @@ declare let $: any;
   templateUrl: './list-resources.component.html',
   styleUrls: ['./list-resources.component.css']
 })
-export class ListResourcesComponent implements OnInit, AfterViewChecked {
+export class ListResourcesComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   resources: any[];
   public categories: any[];
   public categID: any;
-
+  jqueryC : any ;
   constructor(private spinnerService: Ng4LoadingSpinnerService,
               private router: ActivatedRoute,
               private _resourcesService: ResourcesService,
@@ -34,6 +34,9 @@ export class ListResourcesComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
 
+  }
+
+  ngAfterViewInit() {
   }
 
   ngAfterViewChecked() {
@@ -78,8 +81,6 @@ export class ListResourcesComponent implements OnInit, AfterViewChecked {
         $(a.target).prev('.panel-heading').removeClass('active');
       });
   }
-
-
 
 
 }

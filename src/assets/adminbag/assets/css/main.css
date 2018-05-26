@@ -2043,8 +2043,8 @@ Error, Login & Lockscreen
 .middle-box {
   max-width: 400px;
   z-index: 100;
-  margin: 0 auto;
-  padding-top: 40px;
+  margin: 5% auto;
+  /*padding-top: 40px;*/
 }
 
 .lockscreen.middle-box {
@@ -2904,6 +2904,7 @@ Page Sidebar
 .page-content-wrapper .page-content {
   margin-top: 0;
   min-height: 1200px;
+  margin-left: 220px;
   padding: 0 10px 10px;
   position: relative;
   transition: all 0.4s ease 0s;

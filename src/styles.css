@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 /*@import '~bootstrap/dist/css/bootstrap.min.css';*/
 /*@import './styles/bootstrap-3.3.7-dist/css/bootstrap.min.css';*/
+@import "~fullcalendar/dist/fullcalendar.css";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import '~@swimlane/ngx-datatable/release/index.css';
+@import '../node_modules/icheck/skins/square/blue.css';
+
 @-webkit-keyframes spin {
   0% {
     transform: rotate(0)
@@ -77,4 +82,38 @@
   bottom: 15px;
   box-shadow: 0 3px 3px 0 rgba(61, 175, 255, 1);
   animation: spin 1.5s linear infinite
+}
+
+
+.bg-green-blue{
+  color: #fff;
+  background-color: #29aba4;
+}
+
+.bg-black-blue{
+  background-color: rgba(43, 54, 67, 0.85) !important;
+  color: #fff;
+}
+
+.bg-grey {
+  background-color: #9E9E9E !important;
+  color: #fff;
+}
+
+input{
+  font-weight: 600;
+}
+.modal-body{
+  padding:50px;
+}
+
+
+.bg-orange{
+  background-color: #ad4345;
+}
+.bg-success{
+  background-color: #469348!important;
+}
+.modal{
+  z-index: 1050;
 }

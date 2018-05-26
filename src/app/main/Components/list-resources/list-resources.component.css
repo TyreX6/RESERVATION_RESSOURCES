@@ -1,8 +1,7 @@
 
-
 .wrap {
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
+  /*box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);*/
+  /*border-radius: 4px;*/
 }
 
 a:focus,
@@ -47,9 +46,9 @@ a:active {
 .panel-title a {
   display: block;
   color: #fff;
-  padding: 15px;
+  padding: 14px;
   position: relative;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
 }
 
@@ -70,12 +69,13 @@ a:active {
   border-radius: 0;
   transition: border-radius linear 0s;
 }
+
 /* #bs-collapse icon scale option */
 
 .panel-heading a:before {
-  content: '\e146';
+  content: '\f103';
   position: absolute;
-  font-family: 'Material Icons';
+  font-family: 'FontAwesome';
   right: 5px;
   top: 10px;
   font-size: 24px;
@@ -84,16 +84,16 @@ a:active {
 }
 
 .panel-heading.active a:before {
-  content: ' ';
+  content: '\f102';
   transition: all 0.5s;
   transform: scale(0);
 }
 
 #bs-collapse .panel-heading a:after {
-  content: ' ';
+  content: '\f102';
   font-size: 24px;
   position: absolute;
-  font-family: 'Material Icons';
+  font-family: 'FontAwesome';
   right: 5px;
   top: 10px;
   transform: scale(0);
@@ -101,17 +101,18 @@ a:active {
 }
 
 #bs-collapse .panel-heading.active a:after {
-  content: '\e909';
+  content: '\f102';
   transform: scale(1);
   transition: all 0.5s;
 }
+
 /* #accordion rotate icon option */
 
 #accordion .panel-heading a:before {
-  content: '\e316';
+  content: "\f102";
   font-size: 24px;
   position: absolute;
-  font-family: 'Material Icons';
+  font-family: FontAwesome;
   right: 5px;
   top: 10px;
   transform: rotate(180deg);
@@ -123,12 +124,34 @@ a:active {
   transition: all 0.5s;
 }
 
-.panel-heading button{
+.panel-heading button {
   position: absolute;
-  font-family: 'Material Icons';
-  top: -17px;
+  font-family: 'FontAwesome';
+  top: -10px;
   right: 5px;
   padding: 15px;
   font-size: 24px;
   background-color: transparent !important;
+}
+
+.ibox-title {
+  border: 1px solid #29aba4 !important;
+}
+
+.ibox-title:hover {
+  background-color: #29aba4;
+  color: #fff;
+}
+
+.ibox-title::selection {
+  background-color: #29aba4;
+  color: #fff;
+}
+
+.panel-collapse .widgets-container {
+  border: 1px solid #29aba4 !important;
+}
+
+.resource-body {
+  border: 2px solid #286090 !important;
 }

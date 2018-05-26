@@ -1,41 +1,196 @@
-<section class="content">
-  <div class="page-container">
-    <div class="page-content-wrapper animated fadeInRight">
-      <div class="page-content">
-        <div class="row wrapper border-bottom page-heading">
-          <div class="col-lg-12">
-            <h2> Recherche </h2>
-            <ol class="breadcrumb">
-              <li><a [routerLink]="['accueil']">Accueil</a></li>
-              <li class="active"><strong>Recherche</strong></li>
-            </ol>
+<div class="row wrapper border-bottom page-heading">
+  <div class="col-lg-12">
+    <h2> Recherche </h2>
+    <ol class="breadcrumb">
+      <li><a [routerLink]="['accueil']">Accueil</a></li>
+      <li class="active"><strong>Recherche</strong></li>
+    </ol>
+  </div>
+</div>
+<div class="wrapper-content ">
+  <div class="row">
+
+    <!-- Visible labels Form start -->
+    <div class="col-lg-12 top20">
+      <div class="widgets-container">
+        <h4>Recherche d'une ressource</h4>
+        <hr>
+        <form class="form-horizontal">
+
+          <div class="form-group row">
+            <div class="col-md-12">
+              <label class="col-md-4">
+                <h4>Type de ressource :</h4>
+              </label>
+              <div class="col-md-8">
+                <label class="mt-radio col-md-3">
+                  <input type="radio" class="iCheck" value="" [(ngModel)]="type"
+                         (ngModelChange)="categChange()"
+                         name="CategRadios">
+                  Tous </label>
+                <label *ngFor="let categ of categoriesNames" class="mt-radio col-md-3">
+                  <input type="radio" class="iCheck" value="{{categ.id}}" [(ngModel)]="type"
+                         (ngModelChange)="categChange()"
+                         name="CategRadios">
+                  {{categ.name}} </label>
+              </div>
+            </div>
+            <hr>
           </div>
-        </div>
-        <div class="wrapper-content ">
-          <div class="row">
-            <p>
-              Search works
-            </p>
 
-            <button type="button" class="btn btn-info" (click)="openModal(template)">Create template modal</button>
+          <hr>
 
-            <ng-template #template>
-              <div class="modal-header">
-                <h4 class="modal-title pull-left">Modal</h4>
-                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <label class="col-md-4">
+                <h4>Filtrage par nom :</h4>
+              </label>
+              <div class="form-group col-md-8">
+                <input class="form-control" id="exampleInputName2" placeholder="Samsung ..." type="text"
+                       [(ngModel)]="resourceName"
+                       (ngModelChange)="nameChanged($event)"
+                       [ngModelOptions]="{standalone: true}">
               </div>
-              <div class="modal-body">
-                <button type="button" class="btn btn-danger">Supprimer</button>
-              </div>
-            </ng-template>
+            </div>
+          </div>
 
-        </div>
+          <hr>
+
+          <div class="form-group row">
+            <div class="col-md-12">
+              <label class="col-md-4">
+                <h4>Filtrage par Sys d'exploitation :</h4>
+              </label>
+              <label class="mt-radio col-md-4">
+                <input type="radio" class="iCheck" value="" [(ngModel)]="osType"
+                       (ngModelChange)="checkOsChange()"
+                       name="optionsRadios">
+                Tous </label>
+
+              <label *ngFor="let oneOs of os" class="mt-radio col-md-4">
+                <input type="radio" class="iCheck" value="{{oneOs.os}}" [(ngModel)]="osType"
+                       (ngModelChange)="checkOsChange()"
+                       name="optionsRadios">
+                {{oneOs.os}} </label>
+
+            </div>
+            <hr>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <div class="col-md-12 col-lg-12">
+              <div class="row">
+                <label class="col-lg-4 col-sm-4 col-md-4 col-xs-12">
+                  <h4>Ram de ressource :</h4>
+                </label>
+
+                <div *ngIf="type < 3 && type != ''" class="form-group col-lg-7 col-sm-7 col-md-7 col-xs-12">
+                  <range-slider [min]="min" [max]="max" [step]="256" [(ngModel)]="range"
+                                (onRangeChange)="rangeChanged($event)"
+                                [ngModelOptions]="{standalone: true}">
+                  </range-slider>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <div  class="col-md-12">
+              <label class="col-md-4">
+                <h4>Résolution :</h4>
+              </label>
+
+              <div *ngIf="type < 4 && type != ''">
+                <div class="form-group col-md-4">
+                  <ng-select [items]="operations"
+                             bindLabel="operation"
+                             bindValue="operation"
+                             (change)="OperationChanged($event)"
+                             [(ngModel)]="operationSelected"
+                             [ngModelOptions]="{standalone: true}"
+                  >
+                  </ng-select>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <ng-select [items]="resolutions$ | async"
+                             bindLabel="resolution"
+                             bindValue="resolution"
+                             (change)="resolChanged($event)"
+                             [(ngModel)]="selectedResolution"
+                             [ngModelOptions]="{standalone: true}"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+
+        </form>
+
       </div>
     </div>
+    <!--Visible labels Form End -->
+    <!--All form elements  start -->
+    <div class="col-lg-12 top20 bottom20">
+      <div class="widgets-container">
+        <h4>Résultat du recheche :</h4>
+        <hr>
+        <table class="table table-responsive table-hover table-bordered">
+          <thead class="bg-primary">
+          <tr>
+            <th>ID</th>
+            <th>Ressource</th>
+            <th>Résolution</th>
+            <th>Ram</th>
+            <th>OS</th>
+            <th>Version OS</th>
+            <th>Categorie</th>
+            <th>CPU</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let res of resourcesToShow | async">
+            <td class="project-status">{{res.id}}
+            </td>
+            <td class="project-title"><a href="#">{{res.model || res.name}}</a> <br>
+              <small>Date ajout: {{res.date_add | date}}</small>
+            </td>
+            <td>{{res.resolution}}</td>
+            <td>{{res.ram}}</td>
+            <td class="project-completion">
+              {{res.os}}
+            </td>
+            <td class="project-actions">
+              {{res._os_version}}
+            </td>
+            <td class="project-actions">
+              {{res.category.name}}
+            </td>
+            <td class="project-actions">
+              {{res.cpu}}
+            </td>
+            <td>
+              <a [routerLink]="['/logged/reservation/add',res.id]"
+                 class="center-block btn btn-primary btn-outline btn-s-md"><i
+                class="fa fa-calendar"></i> Réserver </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+    <!--All form elements  End -->
   </div>
-  </div>
-</section>
+</div>
 
 

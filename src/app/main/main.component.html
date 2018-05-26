@@ -1,7 +1,17 @@
 <app-navbar></app-navbar>
-<app-sidebar></app-sidebar>
-<router-outlet>
-</router-outlet>
-<app-footer></app-footer>
+<div class="page-container">
+  <!-- Start page sidebar wrapper -->
+  <app-sidebar></app-sidebar>
+  <!-- End page sidebar wrapper -->
+  <!-- Start page content wrapper -->
+  <div class="page-content-wrapper animated fadeInRight">
+    <div class="page-content">
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>
+
+<!--<app-footer></app-footer>-->
 
 

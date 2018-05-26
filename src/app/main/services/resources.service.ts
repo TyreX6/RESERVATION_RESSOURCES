@@ -24,6 +24,20 @@ export class ResourcesService {
     });
   }
 
+  GetOsList(): Observable<any[]> {
+    return this.http.get<any[]>(this.serverAddress + 'api/dispositifs/os/list', {
+      headers: new HttpHeaders().set("Content-Type", "application/json")
+        .set("Authorization", "Bearer " + this.token)
+    });
+  }
+
+  GetResolutionsList(): Observable<any[]> {
+    return this.http.get<any[]>(this.serverAddress + 'api/dispositifs/resolution/list', {
+      headers: new HttpHeaders().set("Content-Type", "application/json")
+        .set("Authorization", "Bearer " + this.token)
+    });
+  }
+
   GetResourcesList(): Observable<any[]> {
     return this.http.get<any[]>(this.serverAddress + 'api/resources/list', {
       headers: new HttpHeaders().set("Content-Type", "application/json")

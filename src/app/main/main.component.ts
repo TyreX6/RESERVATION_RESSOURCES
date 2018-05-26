@@ -1,13 +1,13 @@
-import {Component, OnInit,OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewEncapsulation} from '@angular/core';
 import {GlobalService} from "../services/global.service";
 import {Subscription} from 'rxjs/Subscription';
 import {ToastrService} from 'ngx-toastr';
 import {CategoriesService} from "./services/categories.service";
 
 @Component({
-  selector: 'app-logged-pages',
+  // selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  styleUrls: ['./main.component.css'],
 })
 export class MainComponent implements OnInit,OnDestroy {
   categs:any[];

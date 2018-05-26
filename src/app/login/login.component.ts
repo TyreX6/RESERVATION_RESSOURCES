@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
 
       this.spinnerService.hide();
       this.router.navigate(['/logged/reservation/add']);
-      location.reload();
+      //location.reload();
 
     }, (err) => {
       this.toaster.error("Vérifier votre login et mot de passe","Erreur");

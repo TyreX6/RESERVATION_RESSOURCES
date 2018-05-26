@@ -1,4 +1,4 @@
-(function($) {
+
     "use strict";
     // window scroll function
 
@@ -35,13 +35,13 @@
         }
     });
 
-    
+
 
     $('.menu-toggler.sidebar-toggler').on('click', function() {
         $('body').toggleClass('page-sidebar-closed');
     });
 
-    // apply slimScroll 
+    // apply slimScroll
     var scrollH = $(window).height();
     $('#right-sidebar .tab-content').slimScroll({
         height: scrollH - 45
@@ -58,7 +58,7 @@
         }
     });
 
-    // ibox tools close button 
+    // ibox tools close button
     $('.ibox-tools .close-link').on('click', function() {
         $(this).parents(".ibox").hide();
     });
@@ -74,8 +74,6 @@
         .focusout(function() {
             $(".page-header.navbar .search-form.search-form-expanded").removeClass("open");
         });
-
-})(jQuery);
 
 // window resize
 $(window).resize(function() {

@@ -40,6 +40,13 @@ export class CategoriesService {
     });
   }
 
+  GetCategoryNames(): Observable<any[]> {
+    return this.http.get<any[]>(this.serverAddress + 'api/categories/names', {
+      headers: new HttpHeaders().set("Content-Type", "application/json")
+        .set("Authorization", "Bearer " + this.token)
+    });
+  }
+
   GetCategory(id:any): Observable<any[]> {
     return this.http.get<any[]>(this.serverAddress + 'api/categories/list/resources/'+id, {
       headers: new HttpHeaders().set("Content-Type", "application/json")

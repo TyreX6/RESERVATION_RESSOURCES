@@ -31,6 +31,17 @@ export class ReservationsService {
 
   }
 
+  //------------ Retreive all reservations for specific user -----------//
+  GetReservationsListByUser(id: any): Observable<any[]> {
+
+    return this.http.get<any[]>(this.serverAddress + 'api/reservations/liste/user/' + id, {
+      headers: new HttpHeaders()
+        .set("Content-Type", "application/json")
+        .set("Authorization", "Bearer " + this.token)
+    });
+
+  }
+
   //------------ Add reservation to the database -----------//
   AddReservation(reservation: any): Observable<any> {
     reservation.start = reservation.start.format("YYYY-MM-DD HH:mm:ss");

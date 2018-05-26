@@ -1,68 +1,116 @@
-<section class="content">
-  <div class="">
-    <div class="page-content-wrapper animated fadeInRight">
-      <div class="page-content">
-        <div class="row wrapper border-bottom page-heading">
-          <div class="col-lg-12">
-            <h2> Profile Collaborateur </h2>
-            <ol class="breadcrumb">
-              <li><a [routerLink]="['accueil']">Accueil</a></li>
-              <li class="active"><strong>Profile</strong></li>
-            </ol>
-          </div>
-        </div>
-        <div class="wrapper-content ">
-          <div class="row">
-            <!-- tabs -->
-            <div class="col-lg-12 top20">
-              <div class="tabs-container">
-                <ul class="row nav nav-tabs">
-                  <li class="col-xs-6 active"><a href="#tab-1" data-toggle="tab" > Informations</a></li>
-                  <li class="col-xs-6"><a href="#tab-2" data-toggle="tab" >Historiques </a></li>
-                </ul>
-                <div class="tab-content">
-                  <div class="tab-pane active" id="tab-1">
-                    <div class="panel-body"> <strong>Lorem ipsum dolor sit amet</strong>
-                      <div class="ibox">
-                        <div class="widgets-container">
-                          <h3>Détails personnels </h3>
-                          <table class="table small m-b-xs">
-                            <tbody>
-                            <tr>
-                              <td><strong>142</strong> Projects </td>
-                              <td><strong>22</strong> Followers </td>
-                            </tr>
-                            <tr>
-                              <td><strong>61</strong> Comments </td>
-                              <td><strong>54</strong> Articles </td>
-                            </tr>
-                            <tr>
-                              <td><strong>154</strong> Tags </td>
-                              <td><strong>32</strong> Friends </td>
-                            </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane" id="tab-2">
-                    <div class="panel-body"> <strong>Lorem ipsum dolor sit amet</strong>
-                      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. </p>
-                      <p>I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so happy, my dear friend, so absorbed in the exquisite
-                        sense of mere tranquil existence, that I neglect my talents. I should be incapable of drawing a single stroke at the present moment; and yet.</p>
-                    </div>
-                  </div>
+<div class="row wrapper border-bottom page-heading">
+  <div class="col-lg-12">
+    <h2> Profile Collaborateur </h2>
+    <ol class="breadcrumb">
+      <li><a [routerLink]="['accueil']">Accueil</a></li>
+      <li class="active"><strong>Profile</strong></li>
+    </ol>
+  </div>
+</div>
+<div class="wrapper-content ">
+  <div class="row">
+    <!-- tabs -->
+    <div class="col-lg-12 top20">
+      <div class="tabs-container">
+        <ul class="row nav nav-tabs">
+          <li class="col-xs-6 active"><a href="#tab-1" data-toggle="tab"> Informations</a></li>
+          <li class="col-xs-6"><a href="#tab-2" data-toggle="tab">Historiques </a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab-1">
+            <div class="panel-body"><strong>Statistiques concernant l'utilisateur: {{_gS.currentUser.username}}</strong>
+              <div class="ibox">
+                <div class="widgets-container">
+                  <h3>Détails personnels </h3>
+                  <table class="table m-b-xs">
+                    <tbody>
+                    <tr>
+                      <td> Nom</td>
+                      <td> {{_gS.currentUser.username}}</td>
+                    </tr>
+                    <tr>
+                      <td> Email</td>
+                      <td> {{_gS.currentUser.email}}</td>
+                    </tr>
+                    <tr>
+                      <td> Roles</td>
+                      <td><strong *ngFor="let role of _gS.currentUser.roles">{{role}}, </strong></td>
+                    </tr>
+                    <tr>
+                      <td> Nombre de réservations totale</td>
+                      <td>{{reservations.length}}</td>
+                    </tr>
+                    <tr>
+                      <td> Nombre de réservations terminées</td>
+                      <td>{{getPassedReservation()}}</td>
+                    </tr>
+                    <tr>
+                      <td> Nombre de réservations en cours</td>
+                      <td>{{getactualReservation()}}</td>
+                    </tr>
+                    <tr>
+                      <td> Nombre de réservations en attente</td>
+                      <td>{{getUpcomingReservation()}}</td>
+                    </tr>
 
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
-            <!-- tabs -->
+          </div>
+          <div class="tab-pane" id="tab-2">
+            <div class="panel-body"><strong>L'historique de vos réservations:</strong>
+              <br>
+              <div class="project-list">
+                <table id="proList" class="table table-hover responsive nowrap table-bordered">
+                  <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Ressource</th>
+                    <th>Date début</th>
+                    <th>Date fin</th>
+                    <th>Status</th>
+                    <th class="project-actions">Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let res of reservations" id="{{res.id}}">
+                    <td *ngIf="isStatus(res) == 1" class="project-status"><span class="label btn green">Active</span>
+                    </td>
+                    <td *ngIf="isStatus(res) == 2" class="project-status"><span class="label btn red">Terminée</span>
+                    </td>
+                    <td *ngIf="isStatus(res) == 0" class="project-status"><span
+                      class="label label-default">En attente</span>
+                    </td>
+                    <td class="project-title"><a href="#">{{res.ressource.model || res.ressource.name}}</a> <br>
+                      <small>Code {{res.ressource.bar_code}}</small>
+                    </td>
+                    <td>{{res.date_debut | date:'yyyy-MM-dd HH:mm'}}</td>
+                    <td>{{res.date_fin | date:'yyyy-MM-dd HH:mm'}}</td>
+                    <td class="project-completion">
+                      <small>Completion with: {{pourcentage(res)}}%</small>
+                      <div class="progress progress-mini">
+                        <div class="progress-bar" [style.width]="pourcentage(res)+'%'"></div>
+                      </div>
+                    </td>
+                    <td class="project-actions"><a *ngIf="isStatus(res) < 2" (click)="annuler(res)"
+                                                   class="red center-block btn btn-outline btn-s-md"><i
+                      class="fa fa-stop"></i> Annuler </a></td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </div>
+
+            </div>
           </div>
 
         </div>
       </div>
     </div>
+    <!-- tabs -->
   </div>
-</section>
+
+</div>
 

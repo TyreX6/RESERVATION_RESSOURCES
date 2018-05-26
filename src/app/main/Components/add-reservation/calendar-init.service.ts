@@ -35,7 +35,7 @@ export class CalendarInitService {
       slotEventOverlap: false,
       eventOverlap: false,
       selectOverlap: false,
-      weekends: false,
+      weekends: true,
       allDaySlot: false,
       droppable: true, // this allows things to be dropped onto the calendar !!!
       dropAccept: '.fc-event',
@@ -80,7 +80,7 @@ export class CalendarInitService {
         start: moment(detail.start),
         end: moment(detail.end),
         className: ["bg-orange"],
-        resource: deviceSelected.value,
+        resource: deviceSelected,
         editable: true
       }
     };
@@ -111,6 +111,7 @@ export class CalendarInitService {
       },
       (err: HttpErrorResponse) => {
         this.toastr.error("Erreur coté serveur", "Erreur 500");
+        ucCalendar.fullCalendar('removeEvents', [model.event.id]);
         clearInterval(this.blink());
       });
   }
@@ -301,7 +302,7 @@ export class CalendarInitService {
   public verifyCrossReservation(events: any[], start, end) {
     let count: number = 0;
     events.forEach(element => {
-      if (element.start.isBetween(start, end) || element.end.isBetween(start, end)) {
+      if (moment(element.start).isBetween(start, end) || moment(element.end).isBetween(start, end)) {
         count++;
         return;
       }
